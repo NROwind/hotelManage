@@ -4,12 +4,21 @@ import java.util.Date;
 
 //商品类
 public class Commodity {
+    private int id;
     private String name;
     private double price;
     private int shelfQuantity;
     private int stockQuantity;
     private Date beginprovidetime;
     private Date stopprovidetime;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

@@ -1,11 +1,19 @@
 package org.csu.hotel.domain;
 
 public class Replace {
+    private int formId;
     private Financial financial;
     private Commodity commodity;
     private int commodityNum;
     private double totalPrice;
 
+    public int getFormId() {
+        return formId;
+    }
+
+    public void setFormId(int formId) {
+        this.formId = formId;
+    }
 
     public Financial getFinancial() {
         return financial;

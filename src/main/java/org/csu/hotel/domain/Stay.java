@@ -3,6 +3,7 @@ package org.csu.hotel.domain;
 import java.util.Date;
 
 public class Stay {
+    private int stayId;
     private int tenantId;
     private int roomId;
     private Date stayStartTime;
@@ -14,6 +15,14 @@ public class Stay {
     private Date orderTime;
     private int inStay;
     private int isCancel;
+
+    public int getStayId() {
+        return stayId;
+    }
+
+    public void setStayId(int stayId) {
+        this.stayId = stayId;
+    }
 
     public int getTenantId() {
         return tenantId;

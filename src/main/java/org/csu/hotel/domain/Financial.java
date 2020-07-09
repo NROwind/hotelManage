@@ -3,12 +3,20 @@ package org.csu.hotel.domain;
 import java.util.Date;
 
 public class Financial {
+    private int formId;
     private Date date;
     private int roomType;
     private int num;
     private double commodityPrice;
     private double totalPrice;
 
+    public int getFormId() {
+        return formId;
+    }
+
+    public void setFormId(int formId) {
+        this.formId = formId;
+    }
 
     public Date getDate() {
         return date;

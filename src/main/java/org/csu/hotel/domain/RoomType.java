@@ -1,6 +1,7 @@
 package org.csu.hotel.domain;
 
 public class RoomType {
+    private int id;
     private double price;
     private int numOfPerson;
     private int numOfBed;
@@ -14,6 +15,14 @@ public class RoomType {
     private String hasBreakfast;
     private String hasReserve;
     private String hasDiscount;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public double getPrice() {
         return price;

@@ -3,6 +3,7 @@ package org.csu.hotel.domain;
 import java.util.Date;
 
 public class Member {
+    private int id;
     private String name;
     private long phone;
     private String email;
@@ -11,6 +12,14 @@ public class Member {
     private double discount;
     private double integral;
     private String favoriteAffairs;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

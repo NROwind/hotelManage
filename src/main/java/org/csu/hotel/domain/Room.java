@@ -1,9 +1,18 @@
 package org.csu.hotel.domain;
 
 public class Room {
+    private int id;
     private int floor;
     private String status;
     private RoomType roomType;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getFloor() {
         return floor;
