@@ -1,5 +1,8 @@
 package org.csu.hotel.domain;
 
+import lombok.Data;
+
+@Data
 public class RoomType {
     private int id;
     private double price;

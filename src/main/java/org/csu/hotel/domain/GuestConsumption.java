@@ -1,7 +1,10 @@
 package org.csu.hotel.domain;
 
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class GuestConsumption {
     //房客
     private Tenant tenant;

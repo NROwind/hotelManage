@@ -1,5 +1,8 @@
 package org.csu.hotel.domain;
 
+import lombok.Data;
+
+@Data
 public class Replace {
     private int formId;
     private Financial financial;

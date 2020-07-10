@@ -1,7 +1,10 @@
 package org.csu.hotel.domain;
 
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class Stay {
     private int stayId;
     private int tenantId;
@@ -13,7 +16,7 @@ public class Stay {
     private double deposit;
     private double paidDeposit;
     private Date orderTime;
-    private int inStay;
+    private int isStay;
     private int isCancel;
 
     public int getStayId() {
@@ -97,11 +100,11 @@ public class Stay {
     }
 
     public int getInStay() {
-        return inStay;
+        return isStay;
     }
 
     public void setInStay(int inStay) {
-        this.inStay = inStay;
+        this.isStay = inStay;
     }
 
     public int getIsCancel() {

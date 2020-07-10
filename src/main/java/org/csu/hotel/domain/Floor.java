@@ -1,7 +1,10 @@
 package org.csu.hotel.domain;
 
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class Floor {
     private int numOfFloor;
     private Date cleanTime;

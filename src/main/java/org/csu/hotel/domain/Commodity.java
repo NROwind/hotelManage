@@ -1,16 +1,20 @@
 package org.csu.hotel.domain;
 
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 //商品类
+@Data
 public class Commodity {
     private int id;
     private String name;
     private double price;
     private int shelfQuantity;
     private int stockQuantity;
-    private Date beginprovidetime;
-    private Date stopprovidetime;
+    private Date beginProvideTime;
+    private Date stopProvideTime;
 
     public int getId() {
         return id;
@@ -53,18 +57,18 @@ public class Commodity {
     }
 
     public Date getBeginprovidetime() {
-        return beginprovidetime;
+        return beginProvideTime;
     }
 
     public void setBeginprovidetime(Date beginprovidetime) {
-        this.beginprovidetime = beginprovidetime;
+        this.beginProvideTime = beginprovidetime;
     }
 
     public Date getStopprovidetime() {
-        return stopprovidetime;
+        return stopProvideTime;
     }
 
     public void setStopprovidetime(Date stopprovidetime) {
-        this.stopprovidetime = stopprovidetime;
+        this.stopProvideTime = stopprovidetime;
     }
 }
