@@ -1,5 +1,6 @@
 package org.csu.hotel.controller;
 
+import org.csu.hotel.annotation.SysLog;
 import org.csu.hotel.domain.Admin;
 import org.csu.hotel.service.AdminService;
 import org.csu.hotel.util.RestResponse;
@@ -21,6 +22,7 @@ public class AdminController {
     private AdminService adminService;
 
     @GetMapping("session")
+    @SysLog("用户登录")
     public RestResponse login(@RequestParam String username, @RequestParam String password){
         HashMap<String,Object> adminMap = new HashMap<>();
         adminMap.put("user_name",username);
@@ -35,8 +37,8 @@ public class AdminController {
         if(list.size() == 1){
             //登陆成功
             System.out.println(username);
-            return RestResponse.success("成功");
 
+            return RestResponse.success("成功");
         }
         else{
             //登陆失败

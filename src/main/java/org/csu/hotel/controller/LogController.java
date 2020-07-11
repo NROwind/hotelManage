@@ -56,19 +56,21 @@ public class LogController {
         }
 
         Page<Log> logPage = (Page<Log>) logService.page(new Page<>(page,limit),queryWrapper);
+
         System.out.println(logPage.getTotal());
         layerData.setCount((int) logPage.getTotal());
 
-
+        layerData.setCode(200);
+        layerData.setMsg("获取成功");
         layerData.setData(logPage.getRecords());
 
         return layerData;
     }
 
     @PostMapping("delete")
-    public RestResponse delete(@RequestParam("ids[]")List<Long> ids){
+    public RestResponse delete(@RequestParam("ids")List<Long> ids){
         if(ids == null || ids.size()==0){
-            RestResponse.failure("请选择要删除的记录");
+            return RestResponse.failure("请选择要删除的记录");
 
         }
         logService.removeByIds(ids);

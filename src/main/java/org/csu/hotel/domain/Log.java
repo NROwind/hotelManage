@@ -1,15 +1,17 @@
 package org.csu.hotel.domain;
 
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import org.omg.CORBA.PRIVATE_MEMBER;
 
 import java.util.Date;
 
 @Data
-public class Log {
+public class Log extends Model<Log> {
     private int id;
     private String userName;
-    private Date time;
+    private Long useTime;
+    private String createDate;
     private String info;
     private String type;//请求类型
     private String title;//日志标题
@@ -19,8 +21,15 @@ public class Log {
     private String params;//操作提交的数据
     private String sessionId;
     private String response;
-    private String browser;//浏览器信息
     private String exception;//异常信息
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
 
     public int getId() {
         return id;
@@ -38,12 +47,12 @@ public class Log {
         this.userName = userName;
     }
 
-    public Date getTime() {
-        return time;
+    public Long getUseTime() {
+        return useTime;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setUseTime(long time) {
+        this.useTime = time;
     }
 
     public String getInfo() {
@@ -116,14 +125,6 @@ public class Log {
 
     public void setResponse(String response) {
         this.response = response;
-    }
-
-    public String getBrowser() {
-        return browser;
-    }
-
-    public void setBrowser(String browser) {
-        this.browser = browser;
     }
 
     public String getException() {
