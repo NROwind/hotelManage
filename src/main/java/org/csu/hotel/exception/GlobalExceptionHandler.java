@@ -1,74 +1,49 @@
 package org.csu.hotel.exception;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.juli.logging.LogFactory;
+import org.csu.hotel.domain.Log;
+import org.csu.hotel.util.RestResponse;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.thymeleaf.exceptions.TemplateEngineException;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
 
-/**
- * 全局异常处理
- */
-@RestControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+@ControllerAdvice
+public class GlobalExceptionHandler {
 
-    /**
-     * 定义要捕获的异常 可以多个 @ExceptionHandler({})
-     *
-     * @param request  request
-     * @param e        exception
-     * @param response response
-     * @return 响应结果
-     */
-    @ExceptionHandler(MyException.class)
-    public ErrorResponseEntity MyExceptionHandler(HttpServletRequest request, final Exception e, HttpServletResponse response) {
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
+    //private static final Log log = LogFactory.getLog();
 
-        MyException exception = (MyException) e;
-        return new ErrorResponseEntity(exception.getCode(), exception.getMessage());
-    }
+    //捕获500异常
+    @ExceptionHandler({HttpMessageNotReadableException.class,
+            HttpRequestMethodNotSupportedException.class,
+            HttpMediaTypeNotSupportedException.class,
+            TemplateEngineException.class,
+            SQLException.class})
+    public void handleHttpMessageNotReadableException(HttpServletRequest request,
+                                                      HttpServletResponse response,
+                                                      Exception e){
 
-    /**
-     * 捕获  RuntimeException 异常
-     *
-     * @param request  request
-     * @param e        exception
-     * @param response response
-     * @return 响应结果
-     */
-    @ExceptionHandler(RuntimeException.class)
-    public ErrorResponseEntity runtimeExceptionHandler(HttpServletRequest request, final Exception e, HttpServletResponse response) {
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        RestResponse restResponse = RestResponse.failure(e.getMessage());
 
-        RuntimeException exception = (RuntimeException) e;
-        return new ErrorResponseEntity(400, exception.getMessage());
-    }
-
-    /**
-     * 通用的接口映射异常处理方
-     */
-    @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        if (ex instanceof MethodArgumentNotValidException) {
-            MethodArgumentNotValidException exception = (MethodArgumentNotValidException) ex;
-            return new ResponseEntity<>(new ErrorResponseEntity(status.value(), exception.getBindingResult().getAllErrors().get(0).getDefaultMessage()), status);
+        try{
+            response.setContentType("application/json;charset=UTF-8");
+            PrintWriter writer = response.getWriter();
+            writer.write(JSONObject.toJSONString(response));
+            writer.flush();
+            writer.close();
         }
-
-        if (ex instanceof MethodArgumentTypeMismatchException) {
-            MethodArgumentTypeMismatchException exception = (MethodArgumentTypeMismatchException) ex;
-
-            logger.error("参数转换失败，方法：" + exception.getParameter().getMethod().getName() + "，参数：" + exception.getName()+ ",信息：" + exception.getLocalizedMessage());
-
-            return new ResponseEntity<>(new ErrorResponseEntity(status.value(), "参数转换失败"), status);
+        catch(IOException el){
+            el.printStackTrace();
         }
-
-        return new ResponseEntity<>(new ErrorResponseEntity(status.value(), "参数转换失败"), status);
     }
 }

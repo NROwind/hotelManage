@@ -1,7 +1,9 @@
 package org.csu.hotel.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.csu.hotel.domain.Admin;
+import org.csu.hotel.domain.Log;
 
-public interface AdminService extends IService<Admin> {
+public interface LogService extends IService<Log> {
+
+
 }

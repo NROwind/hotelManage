@@ -1,21 +1,41 @@
 package org.csu.hotel.exception;
 
-/**
- * 自定义异常
- */
-public class MyException extends RuntimeException {
+public class MyException extends RuntimeException{
 
-    private static final long serialVersionUID = 4564124491192825748L;
-
+    private String msg;
     private int code;
 
-    public MyException() {
-        super();
+    public MyException(){
+        this.code = 500;
     }
 
-    public MyException(int code, String message) {
-        super(message);
-        this.setCode(code);
+    public MyException(String msg,Throwable cause){
+        super(msg,cause);
+        this.msg = msg;
+    }
+
+    public MyException(String msg,int code){
+        super(msg);
+        this.code = code;
+    }
+
+    public MyException(String msg,int code , Throwable cause){
+        super(msg,cause);
+        this.msg = msg;
+        this.code = code;
+    }
+
+    public MyException(String msg){
+        this.msg = msg;
+        this.code = 500;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public int getCode() {
@@ -26,4 +46,3 @@ public class MyException extends RuntimeException {
         this.code = code;
     }
 }
-

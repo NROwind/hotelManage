@@ -7,6 +7,7 @@ import java.util.Date;
 
 @Data
 public class Log {
+    private int id;
     private String userName;
     private Date time;
     private String info;
@@ -20,6 +21,14 @@ public class Log {
     private String response;
     private String browser;//浏览器信息
     private String exception;//异常信息
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getUserName() {
         return userName;

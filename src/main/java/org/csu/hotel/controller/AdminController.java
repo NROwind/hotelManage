@@ -2,9 +2,11 @@ package org.csu.hotel.controller;
 
 import org.csu.hotel.domain.Admin;
 import org.csu.hotel.service.AdminService;
+import org.csu.hotel.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -19,28 +21,27 @@ public class AdminController {
     private AdminService adminService;
 
     @GetMapping("session")
-    public Map<String,Object> login(String username, String passswod){
+    public RestResponse login(@RequestParam String username, @RequestParam String password){
         HashMap<String,Object> adminMap = new HashMap<>();
         adminMap.put("user_name",username);
-        adminMap.put("pass_word",passswod);
-        List<Admin> list =adminService.getAdmin(adminMap);
+        adminMap.put("pass_word",password);
 
-        Map<String,Object> map = new HashMap<>();
+        System.out.println(username);
+        System.out.println(password);
+        List<Admin> list = (List<Admin>) adminService.listByMap(adminMap);
+
+        RestResponse restResponse = new RestResponse();
 
         if(list.size() == 1){
             //登陆成功
             System.out.println(username);
-            map.put("message","成功");
-            map.put("code",200);
-            map.put("token","");
+            return RestResponse.success("成功");
+
         }
         else{
             //登陆失败
-            map.put("code", "0000");
-            map.put("message", "认证失败");
+            return RestResponse.failure("失败");
         }
-
-        return map;
 
     }
 
