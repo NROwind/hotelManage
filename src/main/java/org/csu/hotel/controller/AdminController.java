@@ -23,7 +23,6 @@ public class AdminController {
         HashMap<String,Object> adminMap = new HashMap<>();
         adminMap.put("user_name",username);
         adminMap.put("pass_word",password);
-
         System.out.println(username);
         System.out.println(password);
         List<Admin> list = (List<Admin>) adminService.listByMap(adminMap);
