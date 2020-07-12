@@ -1,12 +1,18 @@
 package org.csu.hotel.domain;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
+@ToString
+@TableName("room_type")
+@NoArgsConstructor
 public class RoomType {
     private int id;
-    private double price;
     private String name;
+    private double price;
     private int numOfPerson;
     private int numOfBed;
     private int totalQuantity;
@@ -20,13 +26,6 @@ public class RoomType {
     private String hasReserve;
     private String hasDiscount;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public int getId() {
         return id;
@@ -138,5 +137,13 @@ public class RoomType {
 
     public void setHasDiscount(String hasDiscount) {
         this.hasDiscount = hasDiscount;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

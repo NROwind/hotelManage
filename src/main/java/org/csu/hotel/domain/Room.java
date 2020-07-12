@@ -1,14 +1,22 @@
 package org.csu.hotel.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
+@TableName("room")
+@ToString
+@NoArgsConstructor
 public class Room {
     private int roomId;
     private int floor;
     private String status;
+    private int typeId;
+    @TableField(exist =false)
     private RoomType roomType;
-
     public int getRoomId() {
         return roomId;
     }
@@ -39,5 +47,13 @@ public class Room {
 
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
+    }
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 }
