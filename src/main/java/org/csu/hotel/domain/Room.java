@@ -4,17 +4,17 @@ import lombok.Data;
 
 @Data
 public class Room {
-    private int id;
+    private int roomId;
     private int floor;
     private String status;
     private RoomType roomType;
 
-    public int getId() {
-        return id;
+    public int getRoomId() {
+        return roomId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
     }
 
     public int getFloor() {

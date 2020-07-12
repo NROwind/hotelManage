@@ -6,6 +6,7 @@ import lombok.Data;
 public class RoomType {
     private int id;
     private double price;
+    private String name;
     private int numOfPerson;
     private int numOfBed;
     private int totalQuantity;
@@ -18,6 +19,14 @@ public class RoomType {
     private String hasBreakfast;
     private String hasReserve;
     private String hasDiscount;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getId() {
         return id;

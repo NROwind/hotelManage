@@ -5,5 +5,5 @@ import org.csu.hotel.domain.Finance;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FinancialMapper extends BaseMapper<Finance> {
+public interface FinanceMapper extends BaseMapper<Finance> {
 }

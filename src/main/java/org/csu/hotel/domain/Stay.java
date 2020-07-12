@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class Stay {
     private int stayId;
-    private int tenantId;
+    private Tenant tenant;
     private int roomId;
     private Date stayStartTime;
     private Date stayEndTime;
@@ -27,12 +27,12 @@ public class Stay {
         this.stayId = stayId;
     }
 
-    public int getTenantId() {
-        return tenantId;
+    public Tenant getTenant() {
+        return tenant;
     }
 
-    public void setTenantId(int tenantId) {
-        this.tenantId = tenantId;
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
     }
 
     public int getRoomId() {
