@@ -34,7 +34,7 @@ public class RoomController {
 
     @PutMapping("room")
     public RestResponse updateCommodity(@RequestBody Room room){
-        int id=room.getId();
+        int id=room.getRoomId();
         if(id!=0||!roomService.updateById(room)){
             return RestResponse.failure("修改房间失败");
         }
@@ -42,7 +42,7 @@ public class RoomController {
     }
     @PostMapping("room")
     public RestResponse insertCommodity(@RequestBody Room room){
-        int id=room.getId();
+        int id=room.getRoomId();
         try{
             roomService.save(room);
         }catch (Exception io){
