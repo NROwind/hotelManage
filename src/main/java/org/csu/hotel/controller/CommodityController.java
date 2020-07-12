@@ -21,7 +21,6 @@ import java.util.Map;
 public class CommodityController {
     @Autowired
     private CommodityService commodityService;
-    //mybatisplus不是很熟悉,之后再改一下
     //单一查询和修改
     @GetMapping("commodity")
     @SysLog("获取商品")
@@ -33,6 +32,8 @@ public class CommodityController {
         }
         List<Commodity> commodities= commodityService.list(queryWrapper);
         layerData.setData(commodities);
+        layerData.setCode(200);
+        layerData.setMsg("获取成功");
         return layerData;
     }
     @PutMapping("commodity")

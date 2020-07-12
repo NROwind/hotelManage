@@ -6,6 +6,6 @@ import org.csu.hotel.domain.Room;
 import java.util.List;
 
 public interface RoomService extends IService<Room>{
-
+    public List<Room> getRoomandRoomtype(int id);
     public List<Room> getAllRooms();
 }

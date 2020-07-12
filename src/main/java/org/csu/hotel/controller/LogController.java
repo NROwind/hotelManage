@@ -77,7 +77,6 @@ public class LogController {
     public RestResponse delete(@RequestParam("ids")List<Long> ids){
         if(ids == null || ids.size()==0){
             return RestResponse.failure("请选择要删除的记录");
-
         }
         logService.removeByIds(ids);
         return RestResponse.success();
