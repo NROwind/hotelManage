@@ -1,6 +1,5 @@
 package org.csu.hotel.util;
 
-import javax.jws.Oneway;
 import java.util.HashMap;
 
 //Response构造器

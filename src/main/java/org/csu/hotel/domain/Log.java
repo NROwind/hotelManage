@@ -2,7 +2,6 @@ package org.csu.hotel.domain;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
-import org.omg.CORBA.PRIVATE_MEMBER;
 
 import java.util.Date;
 
