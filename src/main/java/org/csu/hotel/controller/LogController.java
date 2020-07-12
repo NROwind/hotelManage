@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,10 @@ public class LogController {
         LayerData<Log> layerData = new LayerData<>();
         QueryWrapper<Log> queryWrapper = new QueryWrapper<>();
 
+//        String u = request.getParameter("username");
+//        System.out.println(u);
+//        queryWrapper.eq("user_name",u);
+
         if(!map.isEmpty()){
             String type = (String) map.get("type");
             if(StringUtils.isNoneBlank(type)){
@@ -43,9 +48,10 @@ public class LogController {
                 queryWrapper.like("title",title);
             }
 
-            String username = (String) map.get("username");
+            String username = (String) map.get("user_name");
+            System.out.println(username);
             if(StringUtils.isNoneBlank(username)){
-                queryWrapper.eq("username",username);
+                queryWrapper.eq("user_name",username);
             }
 
             String httpMethod = (String) map.get("httpMethod");
