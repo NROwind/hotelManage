@@ -3,9 +3,11 @@ package org.csu.hotel.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.csu.hotel.domain.Finance;
+import org.csu.hotel.domain.GuestConsumption;
 import org.csu.hotel.domain.Room;
 import org.csu.hotel.domain.Stay;
 import org.csu.hotel.service.FinanceService;
+import org.csu.hotel.service.GuestConsumptionService;
 import org.csu.hotel.service.RoomService;
 import org.csu.hotel.service.StayService;
 import org.csu.hotel.util.LayerData;
@@ -29,6 +31,9 @@ public class FormController {
 
     @Autowired
     private StayService stayService;
+
+    @Autowired
+    private GuestConsumptionService guestConsumptionService;
 
     @PostMapping("finance/day")
     public LayerData<Finance> getFormsByday(@RequestParam(value="page",defaultValue = "1")Integer page,
@@ -143,6 +148,58 @@ public class FormController {
         restResponse.setData(mapList);
         return restResponse;
 
+    }
+
+
+    @PostMapping("consumption")
+    public RestResponse getConsumptionForm1(@RequestParam int tenantId){
+
+        List<Stay> stayList = stayService.getStaysByTenantId(tenantId);
+
+        RestResponse restResponse = null;
+
+        List<Map> returnList = new ArrayList<>();
+
+        for(Stay s:stayList){
+            int stayId = s.getStayId();
+            List<GuestConsumption> guestConsumptionList = guestConsumptionService.getAllConsumptionsByTenantId(tenantId,stayId);
+
+            List<Map> consumptionList = new ArrayList<>();
+
+            double commodityPrice = 0;
+
+            Map<String,Object> map = new HashMap<>();
+
+            for(GuestConsumption g:guestConsumptionList){
+
+                Map<String,Object> consumptionMap = new HashMap<>();
+                commodityPrice += g.getPrice();
+                consumptionMap.put("commodityId",g.getCommodity().getId());
+                consumptionMap.put("quantity",g.getQuantity());
+                consumptionMap.put("commodityName",g.getCommodity().getName());
+                consumptionList.add(consumptionMap);
+
+            }
+
+            map.put("commodityPrice",commodityPrice);
+            map.put("comsumption",consumptionList);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH");//设置日期格式
+            String startDate =  df.format(s.getStayStartTime());
+            map.put("stayStartTime",startDate);
+
+            String endDate =  df.format(s.getStayEndTime());
+            map.put("stayEndTime",endDate);
+
+            returnList.add(map);
+
+
+        }
+
+        restResponse = RestResponse.success("成咯");
+        restResponse.setData(returnList);
+
+
+        return restResponse;
     }
 
 

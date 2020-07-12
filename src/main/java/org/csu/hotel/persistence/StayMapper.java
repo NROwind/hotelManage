@@ -29,4 +29,12 @@ public interface StayMapper extends BaseMapper<Stay> {
     Stay getStayByRoomId(int roomId);
 
 
+    @Select("select * from stay where tenant_id = #{tenantId}")
+    @Results(id = "stayListTenant",value =
+    @Result(column = "tenant_id", property = "tenant",
+            one = @One(select = "org.csu.hotel.persistence.TenantMapper.selectById"))
+    )
+    List<Stay> getStaysByTenantId(int tenantId);
+
+
 }

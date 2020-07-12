@@ -8,10 +8,19 @@ import java.util.Date;
 public class GuestConsumption {
     //房客
     private Tenant tenant;
-    private int commodityId;
+    private Commodity commodity;
     private int quantity;
     private Date date;
     private double price;
+    private int stay_id;
+
+    public int getStay_id() {
+        return stay_id;
+    }
+
+    public void setStay_id(int stay_id) {
+        this.stay_id = stay_id;
+    }
 
     public Tenant getTenant() {
         return tenant;
@@ -21,12 +30,12 @@ public class GuestConsumption {
         this.tenant = tenant;
     }
 
-    public int getCommodityId() {
-        return commodityId;
+    public Commodity getCommodity() {
+        return commodity;
     }
 
-    public void setCommodityId(int commodityId) {
-        this.commodityId = commodityId;
+    public void setCommodity(Commodity commodity) {
+        this.commodity = commodity;
     }
 
     public int getQuantity() {
