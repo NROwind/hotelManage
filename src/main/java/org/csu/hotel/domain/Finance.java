@@ -5,27 +5,44 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class Financial {
-    private int formId;
-    private Date date;
+public class Finance {
+    private int financeId;
+    private String date;
     private int roomType;
-    private int num;
     private double commodityPrice;
     private double totalPrice;
+    private double replacePrice;
+    private double roomPrice;
 
-    public int getFormId() {
-        return formId;
+    public double getReplacePrice() {
+        return replacePrice;
     }
 
-    public void setFormId(int formId) {
-        this.formId = formId;
+    public void setReplacePrice(double replacePrice) {
+        this.replacePrice = replacePrice;
     }
 
-    public Date getDate() {
+    public double getRoomPrice() {
+        return roomPrice;
+    }
+
+    public void setRoomPrice(double roomPrice) {
+        this.roomPrice = roomPrice;
+    }
+
+    public int getFinanceId() {
+        return financeId;
+    }
+
+    public void setFinanceId(int financeId) {
+        this.financeId = financeId;
+    }
+
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -35,14 +52,6 @@ public class Financial {
 
     public void setRoomType(int roomType) {
         this.roomType = roomType;
-    }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
     }
 
     public double getCommodityPrice() {

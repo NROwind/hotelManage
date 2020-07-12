@@ -4,26 +4,26 @@ import lombok.Data;
 
 @Data
 public class Replace {
-    private int formId;
-    private Financial financial;
+    private int replaceId;
+    private Finance finance;
     private Commodity commodity;
     private int commodityNum;
     private double totalPrice;
 
-    public int getFormId() {
-        return formId;
+    public int getReplaceId() {
+        return replaceId;
     }
 
-    public void setFormId(int formId) {
-        this.formId = formId;
+    public void setReplaceId(int replaceId) {
+        this.replaceId = replaceId;
     }
 
-    public Financial getFinancial() {
-        return financial;
+    public Finance getFinance() {
+        return finance;
     }
 
-    public void setFinancial(Financial financial) {
-        this.financial = financial;
+    public void setFinance(Finance finance) {
+        this.finance = finance;
     }
 
     public Commodity getCommodity() {

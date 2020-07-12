@@ -15,6 +15,15 @@ public class Commodity {
     private int stockQuantity;
     private Date beginProvideTime;
     private Date stopProvideTime;
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public int getId() {
         return id;
