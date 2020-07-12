@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.Null;
+import org.csu.hotel.annotation.SysLog;
 import org.csu.hotel.domain.Commodity;
 import org.csu.hotel.domain.Log;
 import org.csu.hotel.persistence.CommodityMapper;
@@ -23,34 +24,47 @@ public class CommodityController {
     //mybatisplus不是很熟悉,之后再改一下
     //单一查询和修改
     @GetMapping("commodity")
+    @SysLog("获取商品")
     public LayerData<Commodity> getCommodity(@RequestParam(value="name") String name){
         LayerData<Commodity> layerData = new LayerData<>();
         QueryWrapper<Commodity>queryWrapper=new QueryWrapper<>();
         if(StringUtils.isNoneBlank(name)){
             queryWrapper.eq("name",name);
         }
-        List<Commodity> commoditie= commodityService.list(queryWrapper);
-        layerData.setData(commoditie);
+        List<Commodity> commodities= commodityService.list(queryWrapper);
+        layerData.setData(commodities);
         return layerData;
     }
     @PutMapping("commodity")
-    public RestResponse updateCommodity(@RequestParam String name){
+    @SysLog("修改商品")
+    public RestResponse updateCommodity(@RequestBody Commodity commodity){
+        String name=commodity.getName();
+        if(!StringUtils.isNoneBlank(name)||!commodityService.updateById(commodity)){
+            return RestResponse.failure("修改商品失败");
+        }
+        return RestResponse.success("修改商品成功");
+    }
+    @PostMapping("commodity")
+    @SysLog("新增商品")
+    public RestResponse insertCommodity(@RequestBody Commodity commodity){
+        String name=commodity.getName();
+        if(!StringUtils.isNoneBlank(name)||!commodityService.save(commodity)){
+            return RestResponse.failure("新增商品失败");
+        }
+        return RestResponse.success("新增商品成功");
+    }
+    @DeleteMapping("commodity")
+    @SysLog("删除商品")
+    public RestResponse deleteCommodity(@RequestParam(value="name") String name){
         QueryWrapper<Commodity>queryWrapper=new QueryWrapper<>();
         if(StringUtils.isNoneBlank(name)){
             queryWrapper.eq("name",name);
         }
-        UpdateWrapper<Commodity>updateWrapper=new UpdateWrapper<>();
-//        updateWrapper.eq();
-//        List<Commodity> commoditie= commodityService.update(queryWrapper);
-
-        return RestResponse.success("成功");
-    }
-    @PostMapping("commodity")
-    public RestResponse insertCommodity(@RequestParam Map<String,Object> params){
-        return RestResponse.success("成功");
-    }
-    @DeleteMapping("commodity")
-    public RestResponse deleteCommodity(@RequestParam String name){
-        return RestResponse.success("成功");
+        else
+            return RestResponse.failure("删除商品失败");
+        if(!commodityService.remove(queryWrapper)){
+            return RestResponse.failure("删除商品失败");
+        }
+        return RestResponse.success("删除商品成功");
     }
 }
