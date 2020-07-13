@@ -1,6 +1,7 @@
 package org.csu.hotel.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.csu.hotel.domain.Log;
 import org.csu.hotel.service.LogService;
@@ -26,7 +27,7 @@ public class LogController {
     //获取日志列表
     @PostMapping("list")
     private LayerData<Log> list(@RequestParam(value="page",defaultValue = "1")Integer page,
-                                @RequestParam(value="limit",defaultValue = "10")Integer limit,
+                                @RequestParam(value="limit",defaultValue = "3")Integer limit,
                                 HttpServletRequest request){
         // Type title username http_method
         Map map = WebUtils.getParametersStartingWith(request,"s_");
@@ -61,13 +62,15 @@ public class LogController {
 
         }
 
-        Page<Log> logPage = (Page<Log>) logService.page(new Page<>(page,limit),queryWrapper);
+        IPage<Log> logPage = logService.page(new Page<>(page,limit),queryWrapper);
 
-        System.out.println(logPage.getTotal());
+        System.out.println(logPage.getSize());
+        //System.out.println(logPage.get);
         layerData.setCount((int) logPage.getTotal());
 
         layerData.setCode(200);
         layerData.setMsg("获取成功");
+        System.out.println(logPage.getCurrent());
         layerData.setData(logPage.getRecords());
 
         return layerData;
