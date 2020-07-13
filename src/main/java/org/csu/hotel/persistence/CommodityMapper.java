@@ -14,5 +14,5 @@ import java.util.List;
 @Repository
 public interface CommodityMapper extends BaseMapper<Commodity> {
     @Select("select * from commodity")
-    List<Room> getAllCommodities();
+    List<Commodity> getAllCommodities();
 }

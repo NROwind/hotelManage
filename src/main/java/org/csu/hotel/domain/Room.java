@@ -17,6 +17,14 @@ public class Room {
     private int typeId;
     @TableField(exist =false)
     private RoomType roomType;
+
+    public Room(int roomId, int floor, int typeId, String status) {
+        this.roomId=roomId;
+        this.floor=floor;
+        this.typeId=typeId;
+        this.status=status;
+    }
+
     public int getRoomId() {
         return roomId;
     }

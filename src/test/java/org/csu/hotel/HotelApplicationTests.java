@@ -1,7 +1,9 @@
 package org.csu.hotel;
 
+import org.csu.hotel.domain.Commodity;
 import org.csu.hotel.domain.Room;
 import org.csu.hotel.persistence.RoomMapper;
+import org.csu.hotel.service.CommodityService;
 import org.csu.hotel.service.RoomService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +17,15 @@ import java.util.List;
 class HotelApplicationTests {
     @Autowired
     private RoomMapper roomMapper;
+    @Autowired
+    private CommodityService commodityService;
     @Test
     void contextLoads() {
     }
     @Test
     void mapperTest1(){
 
-        System.out.println(roomMapper.getRoomandRoomtype(505));
+//        System.out.println(roomMapper.getRoomandRoomtype(505));
+        System.out.println(commodityService.getAllCommodities());
     }
 }

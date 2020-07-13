@@ -18,4 +18,5 @@ public class GuestConsumptionServiceImpl extends ServiceImpl<GuestConsumptionMap
     private GuestConsumptionMapper guestConsumptionMapper;
 
     public List<GuestConsumption> getAllConsumptionsByTenantId(int tenantId,int stayId){return guestConsumptionMapper.getAllConsumptionsByTenantId(tenantId,stayId);}
+
 }

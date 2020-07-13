@@ -16,6 +16,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
 
     @Autowired
     private RoomMapper roomMapper;
+
     public List<Room> getRoomandRoomtype(int id){
         return this.baseMapper.getRoomandRoomtype(id);
     }
