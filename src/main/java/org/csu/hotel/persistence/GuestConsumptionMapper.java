@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface GuestConsumptionMapper extends BaseMapper<GuestConsumption> {
 
-    @Select("select consumption_id,tenant_id ,commodity_id,sum(quantity) as quantity,sum(price) as price from guestconsumption " +
+    @Select("select tenant_id ,commodity_id,sum(quantity) as quantity,sum(price) as price from guestconsumption " +
             "where tenant_id = #{tenantId} and stay_id = #{stayId} group by commodity_id")
     @Results(id = "consumptionTenant",value ={
         @Result(column = "tenant_id", property = "tenant",
