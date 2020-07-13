@@ -2,6 +2,7 @@ package org.csu.hotel.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.csu.hotel.annotation.SysLog;
 import org.csu.hotel.domain.Finance;
 import org.csu.hotel.domain.GuestConsumption;
 import org.csu.hotel.domain.Room;
@@ -36,6 +37,7 @@ public class FormController {
     private GuestConsumptionService guestConsumptionService;
 
     @PostMapping("finance/day")
+    @SysLog("查看日度财务报表")
     public LayerData<Finance> getFormsByday(@RequestParam(value="page",defaultValue = "1")Integer page,
                                             @RequestParam(value="limit",defaultValue = "10")Integer limit,
                                             @RequestParam(required = false) String date){
@@ -65,6 +67,7 @@ public class FormController {
 
 
     @PostMapping("finance/month")
+    @SysLog("查看月度财务报表")
     public RestResponse getFormsByMonth(@RequestParam(value="page",defaultValue = "1")Integer page,
                                         @RequestParam(value="limit",defaultValue = "10")Integer limit,
                                         @RequestParam(required = false) String date){
@@ -86,8 +89,9 @@ public class FormController {
         List<Finance> returnList = new ArrayList<>();
 
         //统计该月份每一天的财务情况
-        int flag = 0;
+
         for(Finance f: financeList){
+            int flag = 0;
             for(Finance rf:returnList){
 
                 if(rf.getDate().equals(f.getDate())){
@@ -113,10 +117,10 @@ public class FormController {
     }
 
     @GetMapping("room")
+    @SysLog("查看房间及租赁情况")
     public RestResponse getAllRooms(){
 
         List<Room> roomList = roomService.getAllRooms();
-        List<Stay> stayList = stayService.getAllStays();
 
         List<Map> mapList = new ArrayList<>();
 
@@ -130,14 +134,25 @@ public class FormController {
             map.put("status",r.getStatus());
 
             if(r.getStatus().equals("N")){
-                Stay stay = stayService.getStayByRoomId(r.getRoomId());
-                map.put("userName",stay.getTenant().getName());
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH");//设置日期格式
-                String startDate =  df.format(stay.getStayStartTime());
-                map.put("stayStartTime",startDate);
+                System.out.println("qsssss");
+                List<Stay> stayList = stayService.getStaysByRoomId(r.getRoomId());
 
-                String endDate = df.format(stay.getStayEndTime());
-                map.put("stayEndTime",endDate);
+                System.out.println(stayList.size());
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH");
+                Date today = new Date();
+
+                for(Stay stay:stayList){
+
+                    if(today.after(stay.getStayStartTime()) && today.before(stay.getStayEndTime())){
+                        map.put("userName",stay.getTenant().getName());
+                        String startDate =  df.format(stay.getStayStartTime());
+                        map.put("stayStartTime",startDate);
+
+                        String endDate = df.format(stay.getStayEndTime());
+                        map.put("stayEndTime",endDate);
+                    }
+                }
+
             }
 
             mapList.add(map);
@@ -152,6 +167,7 @@ public class FormController {
 
 
     @PostMapping("consumption")
+    @SysLog("查看用户消费情况")
     public RestResponse getConsumptionForm1(@RequestParam int tenantId){
 
         List<Stay> stayList = stayService.getStaysByTenantId(tenantId);

@@ -24,8 +24,8 @@ public class StayServiceImpl extends ServiceImpl<StayMapper, Stay> implements St
         return stayMapper.getAllStays();
     }
 
-    public Stay getStayByRoomId(int roomId){
-        return stayMapper.getStayByRoomId(roomId);
+    public List<Stay> getStaysByRoomId(int roomId){
+        return stayMapper.getStaysByRoomId(roomId);
     }
 
     public List<Stay> getStaysByTenantId(int tenantId){

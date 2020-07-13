@@ -9,7 +9,7 @@ public interface StayService extends IService<Stay> {
 
     public List<Stay> getAllStays();
 
-    public Stay getStayByRoomId(int roomId);
+    public List<Stay> getStaysByRoomId(int roomId);
 
     public List<Stay> getStaysByTenantId(int tenantId);
 }
