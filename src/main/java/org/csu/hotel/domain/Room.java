@@ -23,6 +23,7 @@ public class Room {
         this.floor=floor;
         this.typeId=typeId;
         this.status=status;
+        this.setRoomType(new RoomType());
     }
 
     public int getRoomId() {

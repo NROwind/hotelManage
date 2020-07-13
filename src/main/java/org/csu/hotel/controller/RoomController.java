@@ -51,7 +51,7 @@ public class RoomController {
         //条件
         updateWrapper.eq("room_id", roomId);
 
-        if (roomId != 0 || !roomService.update(updateWrapper)) {
+        if (roomId == 0 || !roomService.update(updateWrapper)) {
             return RestResponse.failure("更新房间失败");
         }
         return RestResponse.success("更新房间成功");
@@ -64,7 +64,7 @@ public class RoomController {
         int typeId = Integer.parseInt(map.get("typeId"));
         String status = map.get("status");
         Room room = new Room(roomId, floor, typeId, status);
-        if (roomId != 0 || !roomService.save(room)) {
+        if (roomId == 0 || !roomService.save(room)) {
             return RestResponse.failure("新增房间失败");
         }
         return RestResponse.success("新增房间成功");
@@ -154,8 +154,20 @@ public class RoomController {
         return restResponse;
 
     }
+
+
+    @GetMapping("roomtypes")
+    public LayerData<RoomType> getAllRoomTypes() {
+
+        List<RoomType> roomTypeList = roomTypeService.getAllroomType();
+        LayerData<RoomType> layerData=new LayerData<>();
+        layerData.setData(roomTypeList);
+        layerData.setCode(200);
+        layerData.setMsg("获取成功");
+        return layerData;
+
+    }
 }
-//    @GetMapping("roomtypes")
 
 
 

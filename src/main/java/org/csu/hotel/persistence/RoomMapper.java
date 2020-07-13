@@ -23,5 +23,8 @@ public interface RoomMapper extends BaseMapper<Room> {
                 one=@One(select = "org.csu.hotel.persistence.RoomTypeMapper.selectById")))
     List<Room> getRoomandRoomtype(int id);
 
+//    @Insert("insert into room value(#{id},#{typeId},#{floor},#{status})")
+//    Boolean insertRoom(int id,int floor,String status,int typeId);
+
 
 }

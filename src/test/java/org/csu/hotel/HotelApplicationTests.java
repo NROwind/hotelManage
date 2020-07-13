@@ -1,5 +1,6 @@
 package org.csu.hotel;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.csu.hotel.domain.Commodity;
 import org.csu.hotel.domain.Room;
 import org.csu.hotel.persistence.RoomMapper;
@@ -16,7 +17,7 @@ import java.util.List;
 @SpringBootTest
 class HotelApplicationTests {
     @Autowired
-    private RoomMapper roomMapper;
+    private RoomService roomService;
     @Autowired
     private CommodityService commodityService;
     @Test
@@ -24,8 +25,17 @@ class HotelApplicationTests {
     }
     @Test
     void mapperTest1(){
-
+//         Room room=new Room(503,5,2,"Y");
 //        System.out.println(roomMapper.getRoomandRoomtype(505));
-        System.out.println(commodityService.getAllCommodities());
+//        System.out.println(commodityService.getAllCommodities());
+//         System.out.println(roomService.updateById(room));
+        UpdateWrapper<Room> updateWrapper = new UpdateWrapper<Room>();
+        //修改语句
+        updateWrapper.set("status", "Y");
+        updateWrapper.set("floor", 5);
+        updateWrapper.set("type_id",1);
+        //条件
+        updateWrapper.eq("room_id", 503);
+        System.out.println(roomService.update(updateWrapper));
     }
 }
