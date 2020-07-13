@@ -91,9 +91,7 @@ public class RoomController {
         int floor = StringUtils.isNoneBlank(map.get("floor")) ? Integer.parseInt(map.get("floor")) : 0;
         String typeName = map.get("typeName");
         String status = map.get("status");
-//        QueryWrapper<RoomType>roomTypeQueryWrapper=new QueryWrapper<>();
-//        roomTypeQueryWrapper.like("name",tpyeName);
-//        roomTypeQueryWrapper.get;
+
         QueryWrapper<Room> queryWrapper = new QueryWrapper<>();
         if (roomId != 0) {
             queryWrapper.like("room_id", roomId);

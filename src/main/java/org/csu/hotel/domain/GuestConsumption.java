@@ -1,12 +1,15 @@
 package org.csu.hotel.domain;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
+@TableName("guestconsumption")
 public class GuestConsumption {
     //房客
+    private int consumptionId;
     private Tenant tenant;
     private Commodity commodity;
     private int quantity;
@@ -60,5 +63,13 @@ public class GuestConsumption {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public int getConsumptionId() {
+        return consumptionId;
+    }
+
+    public void setConsumptionId(int consumptionId) {
+        this.consumptionId = consumptionId;
     }
 }

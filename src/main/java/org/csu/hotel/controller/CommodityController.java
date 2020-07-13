@@ -63,9 +63,11 @@ public class CommodityController {
         }
         else
             return RestResponse.failure("删除商品失败");
+
         if(!commodityService.remove(queryWrapper)){
             return RestResponse.failure("删除商品失败");
         }
+
         return RestResponse.success("删除商品成功");
     }
 }

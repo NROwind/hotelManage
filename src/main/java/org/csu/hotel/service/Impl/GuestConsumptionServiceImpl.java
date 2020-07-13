@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -18,5 +19,9 @@ public class GuestConsumptionServiceImpl extends ServiceImpl<GuestConsumptionMap
     private GuestConsumptionMapper guestConsumptionMapper;
 
     public List<GuestConsumption> getAllConsumptionsByTenantId(int tenantId,int stayId){return guestConsumptionMapper.getAllConsumptionsByTenantId(tenantId,stayId);}
+    public List<GuestConsumption> getAllConsumptionsByTenantId2(int tenantId){return guestConsumptionMapper.getAllConsumptionsByTenantId2(tenantId);}
+    public List<GuestConsumption> getAllConsumptions(){return guestConsumptionMapper.getAllConsumptions();}
+    public Boolean insertConsumption(int id, int tenantId, int commodityId, int quantity, Date date, double price, int stayId){return guestConsumptionMapper.insertConsumption(id,tenantId,commodityId,quantity,date,price,stayId);}
+
 
 }
