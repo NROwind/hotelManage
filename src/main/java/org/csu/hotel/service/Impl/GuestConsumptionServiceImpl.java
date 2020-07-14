@@ -24,6 +24,7 @@ public class GuestConsumptionServiceImpl extends ServiceImpl<GuestConsumptionMap
     public Boolean insertConsumption(int tenantId, int commodityId, int quantity, Date date, double price, int stayId){return guestConsumptionMapper.insertConsumption(tenantId,commodityId,quantity,date,price,stayId);}
     public List<GuestConsumption> getWeekConsumptions(String weekDate){return guestConsumptionMapper.getWeekConsumptions(weekDate);}
     public List<GuestConsumption> getDayConsumptions(String dayDate){return guestConsumptionMapper.getDayConsumptions(dayDate);}
+    public List<GuestConsumption> getMonthConsumptions(String monthDate){return guestConsumptionMapper.getMonthConsumptions(monthDate);};
 
 
 
