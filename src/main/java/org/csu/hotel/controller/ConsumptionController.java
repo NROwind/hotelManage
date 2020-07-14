@@ -285,7 +285,7 @@ public class ConsumptionController {
     }
     @DeleteMapping("consumption")
     @SysLog("删除消费记录")
-    public RestResponse deleteConsumption(@RequestParam("consumtionIds[]") List<Integer> consumptionIds) {
+    public RestResponse deleteConsumption(@RequestParam("consumpotionIds[]") List<Integer> consumptionIds) {
             if (consumptionIds.size() <= 0)
                 return RestResponse.failure("删除消费记录失败");
             if (!guestConsumptionService.removeByIds(consumptionIds)) {
