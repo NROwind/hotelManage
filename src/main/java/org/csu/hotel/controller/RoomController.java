@@ -88,7 +88,7 @@ public class RoomController {
             @RequestParam Map<String, String> map) {
         LayerData<Room> layerData = new LayerData<>();
         String roomSId = map.get("roomId");
-        int roomId = Integer.parseInt(map.get("roomId"));
+        int roomId =StringUtils.isNoneBlank(map.get("roomId"))?Integer.parseInt(map.get("roomId")):0 ;
         int floor = StringUtils.isNoneBlank(map.get("floor")) ? Integer.parseInt(map.get("floor")) : 0;
         String typeName = map.get("typeName");
         String status = map.get("status");
