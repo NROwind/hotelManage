@@ -203,6 +203,7 @@ public class ConsumptionController {
         updateWrapper.set("commodity_id",commodityId);
         updateWrapper.set("stay_id",stayId);
         updateWrapper.set("quantity",quantity);
+        updateWrapper.set("date",date);
         updateWrapper.set("price",price);
         updateWrapper.eq("consumption_id",consumptionId);
 
@@ -239,7 +240,7 @@ public class ConsumptionController {
     }
     @DeleteMapping("consumption")
     @SysLog("删除消费记录")
-    public RestResponse deleteConsumption(@RequestParam List<Integer> consumptionIds) {
+    public RestResponse deleteConsumption(@RequestParam("consumtionIds[]") List<Integer> consumptionIds) {
             if (consumptionIds.size() <= 0)
                 return RestResponse.failure("删除消费记录失败");
             if (!guestConsumptionService.removeByIds(consumptionIds)) {
