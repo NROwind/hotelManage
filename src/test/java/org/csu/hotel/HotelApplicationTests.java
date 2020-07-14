@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.persistence.criteria.CriteriaBuilder;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,13 +29,14 @@ class HotelApplicationTests {
 //        System.out.println(roomMapper.getRoomandRoomtype(505));
 //        System.out.println(commodityService.getAllCommodities());
 //         System.out.println(roomService.updateById(room));
-        UpdateWrapper<Room> updateWrapper = new UpdateWrapper<Room>();
-        //修改语句
-        updateWrapper.set("status", "Y");
-        updateWrapper.set("floor", 5);
-        updateWrapper.set("type_id",1);
-        //条件
-        updateWrapper.eq("room_id", 503);
-        System.out.println(roomService.update(updateWrapper));
+//        UpdateWrapper<Room> updateWrapper = new UpdateWrapper<Room>();
+//        //修改语句
+//        updateWrapper.set("status", "Y");
+//        updateWrapper.set("floor", 5);
+//        updateWrapper.set("type_id",1);
+//        //条件
+//        updateWrapper.eq("room_id", 503);
+//        System.out.println(roomService.update(updateWrapper));
+
     }
 }
