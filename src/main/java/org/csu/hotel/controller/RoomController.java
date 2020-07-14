@@ -113,14 +113,17 @@ public class RoomController {
             LayerData<Room>layerData=new LayerData<>();
 
             Page<Room> roomPage = new Page<>(page,limit);
+            //@TODO
+            //改动
             roomPage.setRecords(roomList);
             layerData.setData(roomPage.getRecords());
-            layerData.setCount((int)roomPage.getTotal());
+            layerData.setCount((int)roomList.size());
             layerData.setMsg("成了");
             layerData.setCode(200);
             return layerData;
         }
         LayerData<Room> layerData = new LayerData<>();
+
         String roomSId = map.get("roomId");
         int roomId =StringUtils.isNoneBlank(map.get("roomId"))?Integer.parseInt(map.get("roomId")):0 ;
         int floor = StringUtils.isNoneBlank(map.get("floor")) ? Integer.parseInt(map.get("floor")) : 0;
@@ -165,14 +168,6 @@ public class RoomController {
     }
 
 
-//    @GetMapping("rooms")
-//    public LayerData<Map> getAllRooms(@RequestParam(value="page",defaultValue = "1")Integer page,
-//                                    @RequestParam(value="limit",defaultValue = "10")Integer limit) {
-//
-//
-//
-//    }
-
 
     @GetMapping("roomtypes")
     @SysLog("获取所有房间类型")
@@ -183,6 +178,7 @@ public class RoomController {
         layerData.setData(roomTypeList);
         layerData.setCode(200);
         layerData.setMsg("获取成功");
+
         return layerData;
 
     }

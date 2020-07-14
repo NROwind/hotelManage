@@ -34,7 +34,6 @@ public class ConsumptionController {
     public LayerData<GuestConsumption> getConsumptionForm(@RequestParam int tenantId){
         LayerData<GuestConsumption>layerData =new LayerData<>();
         List<GuestConsumption> guestConsumptionList = guestConsumptionService.getAllConsumptionsByTenantId2(tenantId);
-
         layerData.setData(guestConsumptionList);
         layerData.setCode(200);
         layerData.setMsg("欧克");
@@ -48,8 +47,10 @@ public class ConsumptionController {
                                                        @RequestParam(value="limit",defaultValue = "5")Integer limit){
         LayerData<GuestConsumption>layerData =new LayerData<>();
         List<GuestConsumption> guestConsumptionList = guestConsumptionService.getAllConsumptions();
-
+        Page<GuestConsumption>guestConsumptionPage=new Page<>(page,limit);
+        guestConsumptionPage.setRecords(guestConsumptionList);
         layerData.setData(guestConsumptionList);
+        layerData.setCount((int) guestConsumptionPage.getTotal());
         layerData.setCode(200);
         layerData.setMsg("欧克");
 
@@ -158,10 +159,12 @@ public class ConsumptionController {
             System.out.println(e.getMessage());
         }
         UpdateWrapper<GuestConsumption> updateWrapper=new UpdateWrapper<>();
+        updateWrapper.set("tenant_id",tenantId);
+        updateWrapper.set("commodity_id",commodityId);
         updateWrapper.set("stay_id",stayId);
         updateWrapper.set("quantity",quantity);
         updateWrapper.set("price",price);
-        updateWrapper.eq("consumption_id",commodityId);
+        updateWrapper.eq("consumption_id",consumptionId);
 
         if (tenantId==0 || !guestConsumptionService.update(updateWrapper)) {
             return RestResponse.failure("更新消费记录失败");

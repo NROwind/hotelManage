@@ -15,15 +15,7 @@ public class GuestConsumption {
     private int quantity;
     private Date date;
     private double price;
-    private int stay_id;
-
-    public int getStay_id() {
-        return stay_id;
-    }
-
-    public void setStay_id(int stay_id) {
-        this.stay_id = stay_id;
-    }
+    private int stayId;
 
     public Tenant getTenant() {
         return tenant;
@@ -71,5 +63,13 @@ public class GuestConsumption {
 
     public void setConsumptionId(int consumptionId) {
         this.consumptionId = consumptionId;
+    }
+
+    public int getStayId() {
+        return stayId;
+    }
+
+    public void setStayId(int stayId) {
+        this.stayId = stayId;
     }
 }
