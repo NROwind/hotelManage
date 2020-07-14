@@ -2,7 +2,9 @@ package org.csu.hotel.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -16,7 +18,7 @@ public class GuestConsumption {
     @TableField(exist =false)
     private Commodity commodity;
     private int quantity;
-    private Date date;
+    private String date;
     private double price;
     private int stayId;
     private int tenantId;
@@ -46,11 +48,11 @@ public class GuestConsumption {
         this.quantity = quantity;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

@@ -14,6 +14,8 @@ import org.csu.hotel.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,4 +72,22 @@ public class CommodityController {
 
         return RestResponse.success("删除商品成功");
     }
+    @GetMapping("commodities")
+    @SysLog("获取商品id和name")
+    public LayerData<Map> getAllCommodities(){
+        LayerData<Map>layerData=new LayerData<>();
+        List<Map> returnList=new ArrayList<>();
+        List<Commodity> commodities= commodityService.getAllCommodities();
+        for(Commodity commodity:commodities){
+            Map<String,Object>map=new HashMap<>();
+            map.put("commodityId",commodity.getId());
+            map.put("commodityName",commodity.getName());
+            returnList.add(map);
+        }
+        layerData.setData(returnList);
+        layerData.setCode(200);
+        layerData.setMsg("有货了");
+        return layerData;
+    }
+
 }

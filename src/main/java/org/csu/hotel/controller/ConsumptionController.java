@@ -51,6 +51,9 @@ public class ConsumptionController {
         if(map.size()<=0) {
             Page<GuestConsumption> guestConsumptionPage = new Page<>(page, limit);
             List<GuestConsumption> guestConsumptionList = guestConsumptionService.getAllConsumptions();
+            for(GuestConsumption guestConsumption:guestConsumptionList){
+                System.out.println(guestConsumption.getDate());
+            }
             guestConsumptionPage.setRecords(guestConsumptionList);
             layerData.setData(guestConsumptionPage.getRecords());
             layerData.setCount(guestConsumptionList.size());
