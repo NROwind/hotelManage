@@ -239,20 +239,16 @@ public class ConsumptionController {
     }
     @DeleteMapping("consumption")
     @SysLog("删除消费记录")
-    public RestResponse deleteConsumption(@RequestParam int consumptionId){
-        QueryWrapper<GuestConsumption> queryWrapper = new QueryWrapper<>();
-        if (consumptionId != 0) {
-            queryWrapper.eq("consumption_id", consumptionId);
-        } else
-            return RestResponse.failure("删除消费记录失败");
-        if (!guestConsumptionService.remove(queryWrapper)) {
-            return RestResponse.failure("删除消费记录失败");
+    public RestResponse deleteConsumption(@RequestParam List<Integer> consumptionIds) {
+            if (consumptionIds.size() <= 0)
+                return RestResponse.failure("删除消费记录失败");
+            if (!guestConsumptionService.removeByIds(consumptionIds)) {
+                return RestResponse.failure("删除消费记录失败");
+            }
+            return RestResponse.success("删除消费记录成功");
         }
-        return RestResponse.success("删除消费记录成功");
+
+
     }
 
 
-
-
-
-}

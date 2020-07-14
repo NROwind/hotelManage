@@ -92,13 +92,12 @@ public class RoomController {
 
     @DeleteMapping("room")
     @SysLog("删除房间")
-    public RestResponse deleteCommodity(@RequestParam int roomId) {
+    public RestResponse deleteCommodity(@RequestParam("roomIds[]") List<Integer> roomIds) {
         QueryWrapper<Room> queryWrapper = new QueryWrapper<>();
-        if (roomId != 0) {
-            queryWrapper.eq("room_id", roomId);
-        } else
+        if (roomIds.size()<=0)
             return RestResponse.failure("删除房间失败");
-        if (!roomService.remove(queryWrapper)) {
+
+        if (!roomService.removeByIds(roomIds)) {
             return RestResponse.failure("删除房间失败");
         }
         return RestResponse.success("删除房间成功");

@@ -1,6 +1,7 @@
 package org.csu.hotel.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.util.Date;
 @TableName("guestconsumption")
 public class GuestConsumption {
     //房客
+    @TableId
     private int consumptionId;
     @TableField(exist =false)
     private Tenant tenant;
