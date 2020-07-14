@@ -52,7 +52,7 @@ public class ConsumptionController {
             Page<GuestConsumption> guestConsumptionPage = new Page<>(page, limit);
             List<GuestConsumption> guestConsumptionList = guestConsumptionService.getAllConsumptions();
             guestConsumptionPage.setRecords(guestConsumptionList);
-            layerData.setData(guestConsumptionList);
+            layerData.setData(guestConsumptionPage.getRecords());
             layerData.setCount(guestConsumptionList.size());
             layerData.setCode(200);
             layerData.setMsg("欧克");
@@ -65,7 +65,7 @@ public class ConsumptionController {
         String date=map.get("date");
         QueryWrapper<GuestConsumption> queryWrapper = new QueryWrapper<>();
         if (consumptionId != 0) {
-            queryWrapper.like("commodity_id", consumptionId);
+            queryWrapper.like("consumption_id", consumptionId);
         }
         if (tenantId != 0) {
             queryWrapper.like("tenant_id", tenantId);
@@ -117,9 +117,10 @@ public class ConsumptionController {
                 map.put(commodityName,map.get(commodityName)+quantity);
         }
         for(Commodity commodity:commodityList){
-            Map<String, Integer> weekCommodity = new HashMap<>();
+            Map<String, Object> weekCommodity = new HashMap<>();
             String commodityName=commodity.getName();
-            weekCommodity.put(commodityName,map.get(commodityName));
+            weekCommodity.put("commodityName",commodityName);
+            weekCommodity.put("salesVolume",map.get(commodityName));
             returnList.add(weekCommodity);
         }
         consumptionPage.setRecords(returnList);
@@ -158,11 +159,13 @@ public class ConsumptionController {
         //找到当日最高并返回
         List<Map.Entry<String,Integer>> list = new ArrayList(map.entrySet());
         Collections.sort(list, (o1, o2) -> (o1.getValue() - o2.getValue()));//升序
-        list.get(0).getKey();
-        System.out.println(list.get(0).getKey()+list.get(0).getValue());
-        Map<String,Integer>finalmap=new HashMap<>();
-        finalmap.put(list.get(0).getKey(),list.get(0).getValue());
-        returnList.add(finalmap);
+        for(int i=0;i<Math.min(3,list.size());i++){
+            Map<String,String>finalmap=new HashMap<>();
+            finalmap.put("salesVolume", String.valueOf(list.get(i).getValue()));
+            finalmap.put("commodityName",list.get(i).getKey());
+            returnList.add(finalmap);
+        }
+
 
         consumptionPage.setRecords(returnList);
         layerData.setData(consumptionPage.getRecords());
