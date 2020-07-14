@@ -1,5 +1,6 @@
 package org.csu.hotel.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -10,12 +11,16 @@ import java.util.Date;
 public class GuestConsumption {
     //房客
     private int consumptionId;
+    @TableField(exist =false)
     private Tenant tenant;
+    @TableField(exist =false)
     private Commodity commodity;
     private int quantity;
     private Date date;
     private double price;
     private int stayId;
+    private int tenantId;
+    private int commodityId;
 
     public Tenant getTenant() {
         return tenant;
@@ -71,5 +76,21 @@ public class GuestConsumption {
 
     public void setStayId(int stayId) {
         this.stayId = stayId;
+    }
+
+    public int getCommodityId() {
+        return commodityId;
+    }
+
+    public void setCommodityId(int commodityId) {
+        this.commodityId = commodityId;
+    }
+
+    public int getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(int tenantId) {
+        this.tenantId = tenantId;
     }
 }

@@ -171,11 +171,18 @@ public class RoomController {
 
     @GetMapping("roomtypes")
     @SysLog("获取所有房间类型")
-    public LayerData<RoomType> getAllRoomTypes() {
+    public LayerData<Map> getAllRoomTypes() {
 
         List<RoomType> roomTypeList = roomTypeService.getAllroomType();
-        LayerData<RoomType> layerData=new LayerData<>();
-        layerData.setData(roomTypeList);
+        LayerData<Map> layerData=new LayerData<>();
+        List<Map> returnList=new ArrayList<>();
+        for(RoomType roomType:roomTypeList){
+            Map<String,Object> map=new HashMap<>();
+            map.put("typeName",roomType.getName());
+            map.put("typeId",roomType.getId());
+            returnList.add(map);
+        }
+        layerData.setData(returnList);
         layerData.setCode(200);
         layerData.setMsg("获取成功");
 

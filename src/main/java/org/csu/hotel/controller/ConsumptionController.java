@@ -7,13 +7,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Update;
 import org.csu.hotel.annotation.SysLog;
-import org.csu.hotel.domain.Commodity;
-import org.csu.hotel.domain.GuestConsumption;
-import org.csu.hotel.domain.Room;
-import org.csu.hotel.domain.Stay;
+import org.csu.hotel.domain.*;
 import org.csu.hotel.service.CommodityService;
 import org.csu.hotel.service.GuestConsumptionService;
 import org.csu.hotel.service.StayService;
+import org.csu.hotel.service.TenantService;
 import org.csu.hotel.util.LayerData;
 import org.csu.hotel.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +27,8 @@ public class ConsumptionController {
     private GuestConsumptionService guestConsumptionService;
     @Autowired
     private CommodityService commodityService;
+    @Autowired
+    private TenantService tenantService;
     @GetMapping("consumption")
     @SysLog("查看用户消费情况")
     public LayerData<GuestConsumption> getConsumptionForm(@RequestParam int tenantId){
@@ -44,13 +44,47 @@ public class ConsumptionController {
     @GetMapping("consumptions")
     @SysLog("查看所有消费记录")
     public LayerData<GuestConsumption> getConsumptions(@RequestParam(value="page",defaultValue = "1")Integer page,
-                                                       @RequestParam(value="limit",defaultValue = "5")Integer limit){
-        LayerData<GuestConsumption>layerData =new LayerData<>();
-        List<GuestConsumption> guestConsumptionList = guestConsumptionService.getAllConsumptions();
-        Page<GuestConsumption>guestConsumptionPage=new Page<>(page,limit);
-        guestConsumptionPage.setRecords(guestConsumptionList);
-        layerData.setData(guestConsumptionList);
-        layerData.setCount((int) guestConsumptionPage.getTotal());
+                                                       @RequestParam(value="limit",defaultValue = "5")Integer limit,
+                                                       @RequestParam Map<String,String>map){
+        LayerData<GuestConsumption> layerData = new LayerData<>();
+        //所有查询
+        if(map.size()<=0) {
+            Page<GuestConsumption> guestConsumptionPage = new Page<>(page, limit);
+            List<GuestConsumption> guestConsumptionList = guestConsumptionService.getAllConsumptions();
+            guestConsumptionPage.setRecords(guestConsumptionList);
+            layerData.setData(guestConsumptionList);
+            layerData.setCount(guestConsumptionList.size());
+            layerData.setCode(200);
+            layerData.setMsg("欧克");
+            return layerData;
+        }
+        //模糊查询
+        int commodityId = StringUtils.isNoneBlank(map.get("commodityId")) ? Integer.parseInt(map.get("commodityId")) : 0;
+        int tenantId = StringUtils.isNoneBlank(map.get("tenantId")) ? Integer.parseInt(map.get("tenantId")) : 0;
+        int consumptionId=StringUtils.isNoneBlank(map.get("consumptionId")) ? Integer.parseInt(map.get("consumptionId")) : 0;
+        String date=map.get("date");
+        QueryWrapper<GuestConsumption> queryWrapper = new QueryWrapper<>();
+        if (consumptionId != 0) {
+            queryWrapper.like("commodity_id", consumptionId);
+        }
+        if (tenantId != 0) {
+            queryWrapper.like("tenant_id", tenantId);
+        }
+        if (commodityId!=0) {
+            queryWrapper.like("commodity_id", commodityId);
+        }
+        if (StringUtils.isNoneBlank(date)) {
+            queryWrapper.like("date", date);
+        }
+        List<GuestConsumption> guestConsumptions = guestConsumptionService.list(queryWrapper);
+        Page<GuestConsumption> consumptionPage = (Page<GuestConsumption>) guestConsumptionService.page(new Page<>(page, limit), queryWrapper);
+        for(GuestConsumption guestConsumption:guestConsumptions){
+            guestConsumption.setCommodity(commodityService.getById(guestConsumption.getCommodityId()));
+            guestConsumption.setTenant(tenantService.getById(guestConsumption.getTenantId()));
+        }
+        consumptionPage.setRecords(guestConsumptions);
+        layerData.setData(consumptionPage.getRecords());
+        layerData.setCount((int) consumptionPage.getTotal());
         layerData.setCode(200);
         layerData.setMsg("欧克");
 
