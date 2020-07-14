@@ -48,4 +48,12 @@ public interface GuestConsumptionMapper extends BaseMapper<GuestConsumption> {
             @Result(column = "commodity_id", property = "commodity",
                     one = @One(select = "org.csu.hotel.persistence.CommodityMapper.selectById"))})
     List<GuestConsumption> getWeekConsumptions(String weekDate);
+
+    @Select("select * from guestconsumption where DateDiff(date,#{dayDate})=0")
+    @Results(id = "dayconsumption",value ={
+            @Result(column = "tenant_id", property = "tenant",
+                    one = @One(select = "org.csu.hotel.persistence.TenantMapper.selectById")),
+            @Result(column = "commodity_id", property = "commodity",
+                    one = @One(select = "org.csu.hotel.persistence.CommodityMapper.selectById"))})
+    List<GuestConsumption> getDayConsumptions(String dayDate);
 }

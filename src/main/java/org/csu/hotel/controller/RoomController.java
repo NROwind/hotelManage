@@ -26,6 +26,7 @@ public class RoomController {
     private RoomTypeService roomTypeService;
 
     @GetMapping("room")
+    @SysLog("查询房间")
     public LayerData<Room> getCommodity(@RequestParam int id) {
         LayerData<Room> layerData = new LayerData<>();
         List<Room> room = roomService.getRoomandRoomtype(id);
@@ -37,6 +38,7 @@ public class RoomController {
     }
 
     @PutMapping("room")
+    @SysLog("更新房间信息")
     public RestResponse updateCommodity(@RequestParam Map<String, String> map) {
         int roomId = Integer.parseInt(map.get("roomId"));
         int floor = Integer.parseInt(map.get("floor"));
@@ -56,6 +58,7 @@ public class RoomController {
         return RestResponse.success("更新房间成功");
     }
     @PatchMapping("room")
+    @SysLog("更新房间状态")
     public RestResponse updateCommodityStatus(@RequestParam Map<String, String> map) {
         int roomId = Integer.parseInt(map.get("roomId"));
 
@@ -74,6 +77,7 @@ public class RoomController {
     }
 
     @PostMapping("room")
+    @SysLog("新增房间")
     public RestResponse insertCommodity(@RequestParam Map<String, String> map) {
         int roomId = Integer.parseInt(map.get("roomId"));
         int floor = Integer.parseInt(map.get("floor"));
@@ -87,6 +91,7 @@ public class RoomController {
     }
 
     @DeleteMapping("room")
+    @SysLog("删除房间")
     public RestResponse deleteCommodity(@RequestParam int roomid) {
         QueryWrapper<Room> queryWrapper = new QueryWrapper<>();
         if (roomid != 0) {
@@ -170,6 +175,7 @@ public class RoomController {
 
 
     @GetMapping("roomtypes")
+    @SysLog("获取所有房间类型")
     public LayerData<RoomType> getAllRoomTypes() {
 
         List<RoomType> roomTypeList = roomTypeService.getAllroomType();

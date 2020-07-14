@@ -56,7 +56,7 @@ public class ConsumptionController {
         return layerData;
     }
 
-    @GetMapping("consumption/commodity/week")
+    @GetMapping("consumption/week")
     @SysLog("一周内商品销量")
     public LayerData<Map> getSalesVolume(@RequestParam(value="page",defaultValue = "1")Integer page,
                                          @RequestParam(value="limit",defaultValue = "5")Integer limit)
@@ -89,7 +89,49 @@ public class ConsumptionController {
         }
         consumptionPage.setRecords(returnList);
         layerData.setData(consumptionPage.getRecords());
-        layerData.setCount((int)consumptionPage.getTotal());
+        layerData.setCount((int)returnList.size());
+        layerData.setCode(200);
+        layerData.setMsg("欧克");
+        return layerData;
+    }
+    @GetMapping("consumption/day")
+    @SysLog("当日消费商品销量最高")
+    public LayerData<Map> getDayConsumption(@RequestParam(value="page",defaultValue = "1")Integer page,
+                                            @RequestParam(value="limit",defaultValue = "5")Integer limit)
+    {
+        LayerData<Map>layerData =new LayerData<>();
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(d);
+        List<GuestConsumption> guestConsumptionList = guestConsumptionService.getDayConsumptions(date);
+        List<Map> returnList=new ArrayList<>();
+        HashSet<Commodity> commodityList=new HashSet<>();
+        Map<String, Integer> map = new HashMap<>();
+        Page<Map> consumptionPage = new Page<>(page,limit);
+        int maxquantity=0;
+        //找到当日所有并去重
+        for(GuestConsumption guestConsumption:guestConsumptionList){
+            Commodity commodity=guestConsumption.getCommodity();
+            String commodityName=commodity.getName();
+            int quantity=guestConsumption.getQuantity();
+            if(commodityList.add(commodity)){
+                map.put(commodityName,quantity);
+            }
+            else
+                map.put(commodityName,map.get(commodityName)+quantity);
+        }
+        //找到当日最高并返回
+        List<Map.Entry<String,Integer>> list = new ArrayList(map.entrySet());
+        Collections.sort(list, (o1, o2) -> (o1.getValue() - o2.getValue()));//升序
+        list.get(0).getKey();
+        System.out.println(list.get(0).getKey()+list.get(0).getValue());
+        Map<String,Integer>finalmap=new HashMap<>();
+        finalmap.put(list.get(0).getKey(),list.get(0).getValue());
+        returnList.add(finalmap);
+
+        consumptionPage.setRecords(returnList);
+        layerData.setData(consumptionPage.getRecords());
+        layerData.setCount((int)returnList.size());
         layerData.setCode(200);
         layerData.setMsg("欧克");
         return layerData;
