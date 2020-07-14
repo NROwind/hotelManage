@@ -140,11 +140,11 @@ public class ConsumptionController {
     @PutMapping("consumption")
     @SysLog("更新消费记录")
     public RestResponse updateConsumption(@RequestParam Map<String,String>map){
-        int consumptionId=Integer.parseInt(map.get("consumption_id"));
-        int tenantId = Integer.parseInt(map.get("tenant_id"));
-        int commodityId = Integer.parseInt(map.get("commodity_id"));
+        int consumptionId=Integer.parseInt(map.get("consumptionId"));
+        int tenantId = Integer.parseInt(map.get("tenantId"));
+        int commodityId = Integer.parseInt(map.get("commodityId"));
         int quantity = Integer.parseInt(map.get("quantity"));
-        int stayId = Integer.parseInt(map.get("stay_id"));
+        int stayId = Integer.parseInt(map.get("stayId"));
 
         Commodity commodity=commodityService.getById(commodityId);
         double price = quantity*commodity.getPrice();
@@ -173,10 +173,10 @@ public class ConsumptionController {
     @PostMapping("consumption")
     @SysLog("新增消费记录")
     public RestResponse insertConsumption(@RequestParam Map<String,String>map){
-        int tenantId = Integer.parseInt(map.get("tenant_id"));
-        int commodityId = Integer.parseInt(map.get("commodity_id"));
+        int tenantId = Integer.parseInt(map.get("tenantId"));
+        int commodityId = Integer.parseInt(map.get("commodityId"));
         int quantity = Integer.parseInt(map.get("quantity"));
-        int stayId = Integer.parseInt(map.get("stay_id"));
+        int stayId = Integer.parseInt(map.get("stayId"));
         Commodity commodity=commodityService.getById(commodityId);
         double price = quantity*commodity.getPrice();
         Date date=new Date();
@@ -196,10 +196,10 @@ public class ConsumptionController {
     }
     @DeleteMapping("consumption")
     @SysLog("删除消费记录")
-    public RestResponse deleteConsumption(@RequestParam int id){
+    public RestResponse deleteConsumption(@RequestParam int consumptionId){
         QueryWrapper<GuestConsumption> queryWrapper = new QueryWrapper<>();
-        if (id != 0) {
-            queryWrapper.eq("consumption_id", id);
+        if (consumptionId != 0) {
+            queryWrapper.eq("consumption_id", consumptionId);
         } else
             return RestResponse.failure("删除消费记录失败");
         if (!guestConsumptionService.remove(queryWrapper)) {
