@@ -3,6 +3,7 @@ package org.csu.hotel.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.api.R;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Update;
 import org.csu.hotel.annotation.SysLog;
@@ -43,7 +44,8 @@ public class ConsumptionController {
 
     @GetMapping("consumptions")
     @SysLog("查看所有消费记录")
-    public LayerData<GuestConsumption> getConsumptions(){
+    public LayerData<GuestConsumption> getConsumptions(@RequestParam(value="page",defaultValue = "1")Integer page,
+                                                       @RequestParam(value="limit",defaultValue = "5")Integer limit){
         LayerData<GuestConsumption>layerData =new LayerData<>();
         List<GuestConsumption> guestConsumptionList = guestConsumptionService.getAllConsumptions();
 
@@ -51,6 +53,45 @@ public class ConsumptionController {
         layerData.setCode(200);
         layerData.setMsg("欧克");
 
+        return layerData;
+    }
+
+    @GetMapping("consumption/commodity/week")
+    @SysLog("一周内商品销量")
+    public LayerData<Map> getSalesVolume(@RequestParam(value="page",defaultValue = "1")Integer page,
+                                         @RequestParam(value="limit",defaultValue = "5")Integer limit)
+    {
+        LayerData<Map>layerData =new LayerData<>();
+        Date d = new Date();
+        System.out.println(d);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(d);
+        List<GuestConsumption> guestConsumptionList = guestConsumptionService.getWeekConsumptions(date);
+        List<Map> returnList=new ArrayList<>();
+        HashSet<Commodity> commodityList=new HashSet<>();
+        Map<String, Integer> map = new HashMap<>();
+        Page<Map> consumptionPage = new Page<>(page,limit);
+        for(GuestConsumption guestConsumption:guestConsumptionList){
+            Commodity commodity=guestConsumption.getCommodity();
+            String commodityName=commodity.getName();
+            int quantity=guestConsumption.getQuantity();
+            if(commodityList.add(commodity)){
+                map.put(commodityName,quantity);
+            }
+            else
+                map.put(commodityName,map.get(commodityName)+quantity);
+        }
+        for(Commodity commodity:commodityList){
+            Map<String, Integer> weekCommodity = new HashMap<>();
+            String commodityName=commodity.getName();
+            weekCommodity.put(commodityName,map.get(commodityName));
+            returnList.add(weekCommodity);
+        }
+        consumptionPage.setRecords(returnList);
+        layerData.setData(consumptionPage.getRecords());
+        layerData.setCount((int)consumptionPage.getTotal());
+        layerData.setCode(200);
+        layerData.setMsg("欧克");
         return layerData;
     }
 
@@ -90,7 +131,6 @@ public class ConsumptionController {
     @PostMapping("consumption")
     @SysLog("新增消费记录")
     public RestResponse insertConsumption(@RequestParam Map<String,String>map){
-        int consumptionId= StringUtils.isNoneBlank(map.get("consumption_id"))?Integer.parseInt(map.get("consumption_id")):0;
         int tenantId = Integer.parseInt(map.get("tenant_id"));
         int commodityId = Integer.parseInt(map.get("commodity_id"));
         int quantity = Integer.parseInt(map.get("quantity"));
@@ -105,7 +145,7 @@ public class ConsumptionController {
         }catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        if(tenantId==0||!guestConsumptionService.insertConsumption(consumptionId,tenantId,commodityId,quantity,date,price,stayId)){
+        if(tenantId==0||!guestConsumptionService.insertConsumption(tenantId,commodityId,quantity,date,price,stayId)){
             return RestResponse.failure("新增消费记录失败");
         }
         else
@@ -125,6 +165,9 @@ public class ConsumptionController {
         }
         return RestResponse.success("删除消费记录成功");
     }
+
+
+
 
 
 }

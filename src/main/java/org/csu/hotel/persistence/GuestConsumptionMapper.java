@@ -38,6 +38,14 @@ public interface GuestConsumptionMapper extends BaseMapper<GuestConsumption> {
                     one = @One(select = "org.csu.hotel.persistence.CommodityMapper.selectById"))})
     List<GuestConsumption> getAllConsumptions();
 
-    @Insert("insert into guestconsumption values(#{id},#{tenantId},#{commodityId},#{quantity},#{date},#{price},#{stayId})")
-    Boolean insertConsumption(int id,int tenantId, int commodityId, int quantity, Date date,double price,int stayId);
+    @Insert("insert into guestconsumption values(null,#{tenantId},#{commodityId},#{quantity},#{date},#{price},#{stayId})")
+    Boolean insertConsumption(int tenantId, int commodityId, int quantity, Date date,double price,int stayId);
+
+    @Select("select * from guestconsumption where DateDiff(date,#{weekDate})<=7")
+    @Results(id = "weekconsumption",value ={
+            @Result(column = "tenant_id", property = "tenant",
+                    one = @One(select = "org.csu.hotel.persistence.TenantMapper.selectById")),
+            @Result(column = "commodity_id", property = "commodity",
+                    one = @One(select = "org.csu.hotel.persistence.CommodityMapper.selectById"))})
+    List<GuestConsumption> getWeekConsumptions(String weekDate);
 }

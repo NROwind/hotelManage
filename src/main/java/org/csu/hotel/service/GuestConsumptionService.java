@@ -11,6 +11,6 @@ public interface GuestConsumptionService extends IService<GuestConsumption> {
     List<GuestConsumption> getAllConsumptionsByTenantId(int tenantId,int stayId);
     List<GuestConsumption> getAllConsumptionsByTenantId2(int tenantId);
     List<GuestConsumption> getAllConsumptions();
-    Boolean insertConsumption(int id,int tenantId,int commodityId, int quantity, Date date, double price, int stayId);
-
+    Boolean insertConsumption(int tenantId,int commodityId, int quantity, Date date, double price, int stayId);
+    List<GuestConsumption> getWeekConsumptions(String weekDate);
 }
