@@ -16,6 +16,7 @@ public class Commodity {
     private Date beginProvideTime;
     private Date stopProvideTime;
     private String type;
+    private String path;
 
     public String getType() {
         return type;
@@ -79,5 +80,13 @@ public class Commodity {
 
     public void setStopprovidetime(Date stopprovidetime) {
         this.stopProvideTime = stopprovidetime;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
