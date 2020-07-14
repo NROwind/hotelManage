@@ -144,19 +144,17 @@ public class RoomController {
         List<Room> rooms = roomService.list(queryWrapper);
         Page<Room> roomPage=(Page<Room>)roomService.page(new Page<>(page,limit),queryWrapper);
         Iterator<Room> iterator = rooms.iterator();
-        if(StringUtils.isNoneBlank(typeName))
             while (iterator.hasNext()) {
                 Room room = iterator.next();
                 System.out.println(room.getRoomId());
                 RoomType roomType = roomTypeService.getById(room.getTypeId());
-                if (!roomType.getName().contains(typeName)) {
-                    System.out.println(room.getRoomId() + roomType.getName());
-                    iterator.remove();
-
-                    continue;
-                } else {
-                    room.setRoomType(roomType);
-                }
+                if(StringUtils.isNoneBlank(typeName))
+                    if (!roomType.getName().contains(typeName)) {
+                        System.out.println(room.getRoomId() + roomType.getName());
+                        iterator.remove();
+                        continue;
+                    }
+                room.setRoomType(roomType);
 
             }
         roomPage.setRecords(rooms);
