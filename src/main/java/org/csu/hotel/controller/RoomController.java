@@ -3,12 +3,11 @@ package org.csu.hotel.controller;
 import com.baomidou.mybatisplus.core.conditions.query.Query;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.csu.hotel.annotation.SysLog;
-import org.csu.hotel.domain.Commodity;
-import org.csu.hotel.domain.Room;
-import org.csu.hotel.domain.RoomType;
-import org.csu.hotel.domain.Stay;
+import org.csu.hotel.domain.*;
 import org.csu.hotel.service.RoomService;
 import org.csu.hotel.service.RoomTypeService;
 import org.csu.hotel.util.LayerData;
@@ -84,10 +83,12 @@ public class RoomController {
     }
 
     @GetMapping("room/query")
-    public LayerData<Room> getLikelyRooms(@RequestParam Map<String, String> map) {
+    public LayerData<Room> getLikelyRooms(@RequestParam(value="page",defaultValue = "1")Integer page,
+                                          @RequestParam(value="limit",defaultValue = "5")Integer limit,
+            @RequestParam Map<String, String> map) {
         LayerData<Room> layerData = new LayerData<>();
         String roomSId = map.get("roomId");
-        int roomId = Integer.parseInt(map.get("roomId"));
+        int roomId =StringUtils.isNoneBlank(map.get("roomId"))?Integer.parseInt(map.get("roomId")):0 ;
         int floor = StringUtils.isNoneBlank(map.get("floor")) ? Integer.parseInt(map.get("floor")) : 0;
         String typeName = map.get("typeName");
         String status = map.get("status");
@@ -104,6 +105,8 @@ public class RoomController {
         }
 
         List<Room> rooms = roomService.list(queryWrapper);
+        Page<Room> roomPage=(Page<Room>)roomService.page(new Page<>(page,limit),queryWrapper);
+
         System.out.println(rooms);
         Iterator<Room> iterator = rooms.iterator();
         while (iterator.hasNext()) {
@@ -121,7 +124,11 @@ public class RoomController {
             }
 
         }
-        layerData.setData(rooms);
+        roomPage.setRecords(rooms);
+        System.out.println(roomPage.getRecords());
+        System.out.println(roomPage.getTotal());
+        layerData.setData(roomPage.getRecords());
+        layerData.setCount((int)roomPage.getTotal());
         layerData.setCode(200);
         return layerData;
 
@@ -129,10 +136,11 @@ public class RoomController {
 
 
     @GetMapping("rooms")
-    public RestResponse getAllRooms() {
+    public LayerData<Map> getAllRooms(@RequestParam(value="page",defaultValue = "1")Integer page,
+                                    @RequestParam(value="limit",defaultValue = "10")Integer limit) {
 
         List<Room> roomList = roomService.getAllRooms();
-
+        LayerData<Map>layerData=new LayerData<>();
         List<Map> mapList = new ArrayList<>();
 
         for (Room r : roomList) {
@@ -145,11 +153,13 @@ public class RoomController {
             map.put("status", r.getStatus());
             mapList.add(map);
         }
-
-
-        RestResponse restResponse = RestResponse.success("成了");
-        restResponse.setData(mapList);
-        return restResponse;
+        Page<Map> roomPage = new Page<>(page,limit);
+        roomPage.setRecords(mapList);
+        layerData.setData(roomPage.getRecords());
+        layerData.setCount(mapList.size());
+        layerData.setMsg("成了");
+        layerData.setCode(200);
+        return layerData;
 
     }
 
