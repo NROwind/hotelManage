@@ -1,6 +1,7 @@
 package org.csu.hotel.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class Room {
+    @TableId
     private int roomId;
     private int floor;
     private String status;

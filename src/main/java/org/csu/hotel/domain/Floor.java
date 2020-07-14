@@ -1,11 +1,13 @@
 package org.csu.hotel.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
 public class Floor {
+    @TableId
     private int numOfFloor;
     private Date cleanTime;
     private int roomQuantity;

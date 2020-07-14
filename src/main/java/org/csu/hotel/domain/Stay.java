@@ -1,11 +1,13 @@
 package org.csu.hotel.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
 public class Stay {
+    @TableId
     private int stayId;
     private Tenant tenant;
     private int roomId;

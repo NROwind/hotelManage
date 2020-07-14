@@ -1,9 +1,11 @@
 package org.csu.hotel.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 @Data
 public class Replace {
+    @TableId
     private int replaceId;
     private Finance finance;
     private Commodity commodity;
