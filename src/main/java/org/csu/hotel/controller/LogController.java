@@ -28,15 +28,10 @@ public class LogController {
     @PostMapping("list")
     private LayerData<Log> list(@RequestParam(value="page",defaultValue = "1")Integer page,
                                 @RequestParam(value="limit",defaultValue = "3")Integer limit,
-                                HttpServletRequest request){
-        // Type title username http_method
-        Map map = WebUtils.getParametersStartingWith(request,"s_");
+                                @RequestParam Map<String,Object>map){
+
         LayerData<Log> layerData = new LayerData<>();
         QueryWrapper<Log> queryWrapper = new QueryWrapper<>();
-
-//        String u = request.getParameter("username");
-//        System.out.println(u);
-//        queryWrapper.eq("user_name",u);
 
         if(!map.isEmpty()){
             String type = (String) map.get("type");
