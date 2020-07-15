@@ -191,7 +191,7 @@ public class ConsumptionController {
         HashSet<Commodity> commodityList=new HashSet<>();
         Map<String, Integer> map = new HashMap<>();
         Page<Map> consumptionPage = new Page<>(page,limit);
-        int maxquantity=0;
+        Map<String,String>mapPath=new HashMap<>();
         //找到当日所有并去重
         for(GuestConsumption guestConsumption:guestConsumptionList){
             Commodity commodity=guestConsumption.getCommodity();
@@ -199,6 +199,7 @@ public class ConsumptionController {
             int quantity=guestConsumption.getQuantity();
             if(commodityList.add(commodity)){
                 map.put(commodityName,quantity);
+                mapPath.put(commodityName,commodity.getPath());
             }
             else
                 map.put(commodityName,map.get(commodityName)+quantity);
@@ -214,7 +215,7 @@ public class ConsumptionController {
         Map<String,String>finalmap=new HashMap<>();
         finalmap.put("salesVolume", String.valueOf(list.get(0).getValue()));
         finalmap.put("commodityName",list.get(0).getKey());
-
+        finalmap.put("path",mapPath.get(list.get(0).getKey()));
         returnList.add(finalmap);
         consumptionPage.setRecords(returnList);
         layerData.setData(consumptionPage.getRecords());
