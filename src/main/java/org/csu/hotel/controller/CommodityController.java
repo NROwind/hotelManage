@@ -12,6 +12,7 @@ import org.csu.hotel.service.CommodityService;
 import org.csu.hotel.util.LayerData;
 import org.csu.hotel.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -72,6 +73,8 @@ public class CommodityController {
 
         return RestResponse.success("删除商品成功");
     }
+
+    @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("commodities")
     @SysLog("获取商品id和name")
     public LayerData<Map> getAllCommodities(){
