@@ -1,5 +1,6 @@
 package org.csu.hotel.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.api.R;
@@ -15,6 +16,8 @@ import org.csu.hotel.service.TenantService;
 import org.csu.hotel.util.LayerData;
 import org.csu.hotel.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -94,9 +97,10 @@ public class ConsumptionController {
         return layerData;
     }
 
+    @Cacheable(key = "'consumption_month'",value = "consumption")
     @GetMapping("consumption/month")
     @SysLog("一月内商品销量")
-    public LayerData<Map> getMonthSalesVolume(@RequestParam(value="page",defaultValue = "1")Integer page,
+    public String getMonthSalesVolume(@RequestParam(value="page",defaultValue = "1")Integer page,
                                          @RequestParam(value="limit",defaultValue = "5")Integer limit)
     {
         LayerData<Map>layerData =new LayerData<>();
@@ -131,11 +135,12 @@ public class ConsumptionController {
         layerData.setCount((int)returnList.size());
         layerData.setCode(200);
         layerData.setMsg("欧克");
-        return layerData;
+        return JSON.toJSONString(layerData);
     }
+    @Cacheable(key = "'consumption_week'",value = "consumption")
     @GetMapping("consumption/week")
     @SysLog("一周消费商品销量最高的三个")
-    public LayerData<Map> getWeekSalesVolume(@RequestParam(value="page",defaultValue = "1")Integer page,
+    public String getWeekSalesVolume(@RequestParam(value="page",defaultValue = "1")Integer page,
                                             @RequestParam(value="limit",defaultValue = "5")Integer limit)
     {
         LayerData<Map>layerData =new LayerData<>();
@@ -175,7 +180,7 @@ public class ConsumptionController {
         layerData.setCount((int)returnList.size());
         layerData.setCode(200);
         layerData.setMsg("欧克");
-        return layerData;
+        return JSON.toJSONString(layerData);
     }
     @GetMapping("consumption/day")
     @SysLog("当日最高销量商品")
@@ -224,6 +229,7 @@ public class ConsumptionController {
         layerData.setMsg("欧克");
         return layerData;
     }
+    @CacheEvict(value = "consumption", allEntries=true)
     @PutMapping("consumption")
     @SysLog("更新消费记录")
     public RestResponse updateConsumption(@RequestParam Map<String,String>map){
@@ -259,7 +265,7 @@ public class ConsumptionController {
         return RestResponse.success("更新消费记录成功");
 
     }
-
+    @CacheEvict(value = "consumption", allEntries=true)
     @PostMapping("consumption")
     @SysLog("新增消费记录")
     public RestResponse insertConsumption(@RequestParam Map<String,String>map){
@@ -284,6 +290,7 @@ public class ConsumptionController {
             return RestResponse.success("新增消费记录成功");
 
     }
+    @CacheEvict(value = "consumption", allEntries=true)
     @DeleteMapping("consumption")
     @SysLog("删除消费记录")
     public RestResponse deleteConsumption(@RequestParam("consumptionIds[]") List<Integer> consumptionIds) {

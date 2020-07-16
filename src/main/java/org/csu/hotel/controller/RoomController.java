@@ -13,6 +13,7 @@ import org.csu.hotel.service.RoomTypeService;
 import org.csu.hotel.util.LayerData;
 import org.csu.hotel.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -165,7 +166,7 @@ public class RoomController {
     }
 
 
-
+    @Cacheable(key = "'room_types'",value = "roomType")
     @GetMapping("roomtypes")
     @SysLog("获取所有房间类型")
     public LayerData<Map> getAllRoomTypes() {
