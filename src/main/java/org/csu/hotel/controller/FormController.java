@@ -134,7 +134,6 @@ public class FormController {
             map.put("status",r.getStatus());
 
             if(r.getStatus().equals("N")){
-                System.out.println("qsssss");
                 List<Stay> stayList = stayService.getStaysByRoomId(r.getRoomId());
 
                 System.out.println(stayList.size());

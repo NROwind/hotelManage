@@ -48,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/session").permitAll()
                 .antMatchers("/haha").permitAll()
+                //.antMatchers("/system/employee").permitAll()
                 .antMatchers("/sysUser/test").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").anonymous()
                 .anyRequest().authenticated()       // 剩下所有的验证都需要验证
