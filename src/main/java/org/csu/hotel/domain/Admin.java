@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 
 @Data
 @AllArgsConstructor
@@ -13,17 +16,17 @@ public class Admin {
     private String userName;
     private String passWord;
     //权限
-    private int authority;
+    private Collection<? extends GrantedAuthority> authority;
 
-    public String getUserName() {
+    public String getUsername() {
         return userName;
     }
 
-    public void setUserName(String userName) {
+    public void setUsername(String userName) {
         this.userName = userName;
     }
 
-    public String getPassWord() {
+    public String getPassword() {
         return passWord;
     }
 
@@ -31,11 +34,11 @@ public class Admin {
         this.passWord = passWord;
     }
 
-    public int getAuthority() {
+    public Collection<? extends GrantedAuthority> getAuthority() {
         return authority;
     }
 
-    public void setAuthority(int authority) {
+    public void setAuthority(Collection<? extends GrantedAuthority> authority) {
         this.authority = authority;
     }
 }

@@ -1,7 +1,10 @@
 package org.csu.hotel.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.HashMap;
 
+@Slf4j
 //Response构造器
 public class RestResponse extends HashMap<String,Object> {
 

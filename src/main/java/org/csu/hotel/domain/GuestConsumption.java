@@ -1,7 +1,11 @@
 package org.csu.hotel.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -9,21 +13,18 @@ import java.util.Date;
 @TableName("guestconsumption")
 public class GuestConsumption {
     //房客
+    @TableId
     private int consumptionId;
+    @TableField(exist =false)
     private Tenant tenant;
+    @TableField(exist =false)
     private Commodity commodity;
     private int quantity;
-    private Date date;
+    private String date;
     private double price;
-    private int stay_id;
-
-    public int getStay_id() {
-        return stay_id;
-    }
-
-    public void setStay_id(int stay_id) {
-        this.stay_id = stay_id;
-    }
+    private int stayId;
+    private int tenantId;
+    private int commodityId;
 
     public Tenant getTenant() {
         return tenant;
@@ -49,11 +50,11 @@ public class GuestConsumption {
         this.quantity = quantity;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -71,5 +72,29 @@ public class GuestConsumption {
 
     public void setConsumptionId(int consumptionId) {
         this.consumptionId = consumptionId;
+    }
+
+    public int getStayId() {
+        return stayId;
+    }
+
+    public void setStayId(int stayId) {
+        this.stayId = stayId;
+    }
+
+    public int getCommodityId() {
+        return commodityId;
+    }
+
+    public void setCommodityId(int commodityId) {
+        this.commodityId = commodityId;
+    }
+
+    public int getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(int tenantId) {
+        this.tenantId = tenantId;
     }
 }

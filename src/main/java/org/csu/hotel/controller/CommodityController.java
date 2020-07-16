@@ -1,5 +1,6 @@
 package org.csu.hotel.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.commons.lang3.StringUtils;
@@ -12,8 +13,13 @@ import org.csu.hotel.service.CommodityService;
 import org.csu.hotel.util.LayerData;
 import org.csu.hotel.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +42,7 @@ public class CommodityController {
         layerData.setMsg("获取成功");
         return layerData;
     }
+    @CacheEvict(value = "commodities", allEntries=true)
     @PutMapping("commodity")
     @SysLog("修改商品")
     public RestResponse updateCommodity(@RequestBody Commodity commodity){
@@ -45,6 +52,7 @@ public class CommodityController {
         }
         return RestResponse.success("修改商品成功");
     }
+    @CacheEvict(value = "commodities", allEntries=true)
     @PostMapping("commodity")
     @SysLog("新增商品")
     public RestResponse insertCommodity(@RequestBody Commodity commodity){
@@ -54,6 +62,7 @@ public class CommodityController {
         }
         return RestResponse.success("新增商品成功");
     }
+    @CacheEvict(value = "commodities", allEntries=true)
     @DeleteMapping("commodity")
     @SysLog("删除商品")
     public RestResponse deleteCommodity(@RequestParam(value="name") String name){
@@ -70,4 +79,25 @@ public class CommodityController {
 
         return RestResponse.success("删除商品成功");
     }
+
+    @Cacheable(key = "'commodities_id_name'",value = "commodities")
+    @PreAuthorize("hasAnyRole('USER')")
+    @GetMapping("commodities")
+    @SysLog("获取商品id和name")
+    public String getAllCommodities(){
+        LayerData<Map>layerData=new LayerData<>();
+        List<Map> returnList=new ArrayList<>();
+        List<Commodity> commodities= commodityService.getAllCommodities();
+        for(Commodity commodity:commodities){
+            Map<String,Object>map=new HashMap<>();
+            map.put("commodityId",commodity.getId());
+            map.put("commodityName",commodity.getName());
+            returnList.add(map);
+        }
+        layerData.setData(returnList);
+        layerData.setCode(200);
+        layerData.setMsg("有货了");
+        return JSON.toJSONString(layerData);
+    }
+
 }

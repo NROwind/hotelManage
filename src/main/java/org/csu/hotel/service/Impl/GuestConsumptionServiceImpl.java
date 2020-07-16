@@ -21,7 +21,11 @@ public class GuestConsumptionServiceImpl extends ServiceImpl<GuestConsumptionMap
     public List<GuestConsumption> getAllConsumptionsByTenantId(int tenantId,int stayId){return guestConsumptionMapper.getAllConsumptionsByTenantId(tenantId,stayId);}
     public List<GuestConsumption> getAllConsumptionsByTenantId2(int tenantId){return guestConsumptionMapper.getAllConsumptionsByTenantId2(tenantId);}
     public List<GuestConsumption> getAllConsumptions(){return guestConsumptionMapper.getAllConsumptions();}
-    public Boolean insertConsumption(int id, int tenantId, int commodityId, int quantity, Date date, double price, int stayId){return guestConsumptionMapper.insertConsumption(id,tenantId,commodityId,quantity,date,price,stayId);}
+    public Boolean insertConsumption(int tenantId, int commodityId, int quantity, Date date, double price, int stayId){return guestConsumptionMapper.insertConsumption(tenantId,commodityId,quantity,date,price,stayId);}
+    public List<GuestConsumption> getWeekConsumptions(String weekDate){return guestConsumptionMapper.getWeekConsumptions(weekDate);}
+    public List<GuestConsumption> getDayConsumptions(String dayDate){return guestConsumptionMapper.getDayConsumptions(dayDate);}
+    public List<GuestConsumption> getMonthConsumptions(String monthDate){return guestConsumptionMapper.getMonthConsumptions(monthDate);};
+
 
 
 }
