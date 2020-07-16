@@ -167,7 +167,7 @@ public class RoomController {
     }
 
 
-    @Cacheable(key = "'room_types'",value = "roomType")
+    @Cacheable(key = "'room_brief'",value = "roomType")
     @GetMapping("roomtypes")
     @SysLog("获取所有房间类型")
     public String getAllRoomTypes() {

@@ -1,5 +1,6 @@
 package org.csu.hotel.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.csu.hotel.annotation.SysLog;
@@ -9,6 +10,8 @@ import org.csu.hotel.service.TenantService;
 import org.csu.hotel.util.LayerData;
 import org.csu.hotel.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,17 +37,19 @@ public class TenantController {
         return layerData;
     }
 
+    @Cacheable(key = "'tenant_all'",value = "tenant")
     @GetMapping("tenants")
     @SysLog("获取全部房客信息")
-    public LayerData<Tenant> getTenantList() {
+    public String getTenantList() {
         LayerData<Tenant> layerData = new LayerData<>();
         List<Tenant> tenants= tenantService.getAllTenant();
         layerData.setData(tenants);
         layerData.setCode(200);
         layerData.setMsg("获取全部房客信息成功");
-        return layerData;
+        return JSON.toJSONString(layerData);
     }
 
+    @CacheEvict(value = "tenant", allEntries=true)
     @PutMapping("tenant")
     @SysLog("修改房客信息")
     public RestResponse updateTenant(@RequestBody Tenant tenant){
@@ -57,6 +62,7 @@ public class TenantController {
         return RestResponse.success("修改房客信息成功");
     }
 
+    @CacheEvict(value = "tenant", allEntries=true)
     @PostMapping("tenant")
     @SysLog("新增房客信息")
     public RestResponse insertTenant(@RequestBody Tenant tenant){
@@ -67,6 +73,7 @@ public class TenantController {
         return RestResponse.success("新增房客信息成功");
     }
 
+    @CacheEvict(value = "tenant", allEntries=true)
     @DeleteMapping("tenant")
     @SysLog("删除房客信息")
     public RestResponse deleteTenant(@RequestParam(value="id") int id){

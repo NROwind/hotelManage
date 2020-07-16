@@ -1,6 +1,7 @@
 package org.csu.hotel.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.csu.hotel.annotation.SysLog;
 import org.csu.hotel.domain.Stay;
@@ -8,6 +9,8 @@ import org.csu.hotel.service.StayService;
 import org.csu.hotel.util.LayerData;
 import org.csu.hotel.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,17 +21,19 @@ public class StayController {
     @Autowired
     private StayService stayService;
 
+    @Cacheable(key = "'stay_all'",value = "stay")
     @GetMapping("stay")
     @SysLog("获取入住信息")
-    public LayerData<Stay> getStayList() {
+    public String getStayList() {
         LayerData<Stay> layerData = new LayerData<>();
         List<Stay> Stays= stayService.getAllStays();
         layerData.setData(Stays);
         layerData.setCode(200);
         layerData.setMsg("获取入住信息成功");
-        return layerData;
+        return JSON.toJSONString(layerData);
     }
 
+    @CacheEvict(value = "stay", allEntries=true)
     @PutMapping("stay")
     @SysLog("修改入住信息")
     public RestResponse updateStay(@RequestBody Stay Stay){
@@ -42,6 +47,7 @@ public class StayController {
         return RestResponse.success("修改入住信息成功");
     }
 
+    @CacheEvict(value = "stay", allEntries=true)
     @PostMapping("stay")
     @SysLog("新增入住信息")
     public RestResponse insertStay(@RequestBody Stay stay){
