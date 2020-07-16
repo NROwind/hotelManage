@@ -1,5 +1,6 @@
 package org.csu.hotel.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.Query;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -169,7 +170,7 @@ public class RoomController {
     @Cacheable(key = "'room_types'",value = "roomType")
     @GetMapping("roomtypes")
     @SysLog("获取所有房间类型")
-    public LayerData<Map> getAllRoomTypes() {
+    public String getAllRoomTypes() {
 
         List<RoomType> roomTypeList = roomTypeService.getAllroomType();
         LayerData<Map> layerData=new LayerData<>();
@@ -184,7 +185,7 @@ public class RoomController {
         layerData.setCode(200);
         layerData.setMsg("获取成功");
 
-        return layerData;
+        return JSON.toJSONString(layerData);
 
     }
 }
