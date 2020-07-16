@@ -1,14 +1,12 @@
 package org.csu.hotel.persistence;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.One;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.csu.hotel.domain.Room;
 import org.csu.hotel.domain.Stay;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -37,4 +35,24 @@ public interface StayMapper extends BaseMapper<Stay> {
     List<Stay> getStaysByTenantId(int tenantId);
 
 
+    @Insert("insert into stay values (#{stayId},#{tenantId},#{roomId},#{stayStartTime}," +
+            "#{stayEndTime},#{money},#{paidMoney},#{deposit},#{paidDeposit},#{orderTime},#{isStay},#{isCancel})")
+    public int insertStay(int stayId, int tenantId, int roomId,Date stayStartTime,Date stayEndTime,double money,
+                              double paidMoney,double deposit,double paidDeposit,Date orderTime,int isStay,int isCancel);
+
+    @Update("update stay set " +
+            "tenant_id = #{tenantId}," +
+            "room_id = #{roomId}," +
+            "stay_start_time = #{stayStartTime}," +
+            "stay_end_time = #{stayEndTime}," +
+            "money = #{money}," +
+            "paid_money = #{paidMoney}," +
+            "deposit = #{deposit}," +
+            "paid_deposit = #{paidDeposit}," +
+            "order_time = #{orderTime}," +
+            "is_stay = #{isStay}," +
+            "is_cancel = #{isCancel}" +
+            " where stay_id = #{stayId}")
+    public int updateStay(int tenantId, int roomId,Date stayStartTime,Date stayEndTime,double money,
+                              double paidMoney,double deposit,double paidDeposit,Date orderTime,int isStay,int isCancel,int stayId);
 }

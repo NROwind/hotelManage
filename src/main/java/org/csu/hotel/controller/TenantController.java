@@ -3,6 +3,7 @@ package org.csu.hotel.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.csu.hotel.annotation.SysLog;
+import org.csu.hotel.domain.Member;
 import org.csu.hotel.domain.Tenant;
 import org.csu.hotel.service.TenantService;
 import org.csu.hotel.util.LayerData;
@@ -30,6 +31,17 @@ public class TenantController {
         layerData.setData(tenants);
         layerData.setCode(200);
         layerData.setMsg("获取房客信息成功");
+        return layerData;
+    }
+
+    @GetMapping("tenants")
+    @SysLog("获取全部房客信息")
+    public LayerData<Tenant> getTenantList() {
+        LayerData<Tenant> layerData = new LayerData<>();
+        List<Tenant> tenants= tenantService.getAllTenant();
+        layerData.setData(tenants);
+        layerData.setCode(200);
+        layerData.setMsg("获取全部房客信息成功");
         return layerData;
     }
 
