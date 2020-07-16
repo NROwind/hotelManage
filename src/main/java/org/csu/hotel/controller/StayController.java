@@ -20,17 +20,16 @@ public class StayController {
     
     @Autowired
     private StayService stayService;
-
-    @Cacheable(key = "'stay_all'",value = "stay")
+    
     @GetMapping("stay")
     @SysLog("获取入住信息")
-    public String getStayList() {
+    public LayerData<Stay> getStayList() {
         LayerData<Stay> layerData = new LayerData<>();
         List<Stay> Stays= stayService.getAllStays();
         layerData.setData(Stays);
         layerData.setCode(200);
         layerData.setMsg("获取入住信息成功");
-        return JSON.toJSONString(layerData);
+        return layerData;
     }
 
     @CacheEvict(value = "stay", allEntries=true)
